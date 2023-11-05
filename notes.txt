@@ -1,0 +1,2 @@
+https://github.com/staudenmeir/belongs-to-through
+composer require staudenmeir/belongs-to-through:"^2.5"
