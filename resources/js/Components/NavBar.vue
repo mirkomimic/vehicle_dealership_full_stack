@@ -1,5 +1,5 @@
 <template>
-  <nav class="sticky top-0 z-10 w-full shadow-sm h-[50px] bg-gray-100 dark:bg-[#28896b] opacity-80">
+  <nav class="sticky top-0 z-10 w-full shadow-sm h-[50px] bg-gray-100 dark:bg-[rgba(33,250,182,0.57)] backdrop-blur-sm opacity-80">
     <div class="container container-sm mx-auto w-full h-full flex items-center">
       <div class="text-[30px] me-auto">
         ICON
@@ -19,8 +19,9 @@ import { Link } from '@inertiajs/vue3';
 </script>
 
 <style scoped>
-/* .myblur {
+.myblur {
+  background-color: rgba(255,255,255,.25);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-} */
+}
 </style>
