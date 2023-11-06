@@ -3,7 +3,6 @@
     <div class="w-full md:w-96">
       <select
         v-model="selectedBrand"
-        @change="changeModel"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#28896b] dark:focus:border-[#28896b]"
         name=""
         id=""
@@ -20,7 +19,6 @@
     <div class="w-full md:w-96 mt-3">
       <select
         v-model="selectedModel"
-        @change="emit('selectedModelEmit', selectedModel)"
         :disabled="selectedBrand === null"
         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-black dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-[#28896b] dark:focus:border-[#28896b]"
         name=""
@@ -41,20 +39,31 @@
 <script setup>
 import { toRefs, computed, ref } from 'vue';
 
-const props = defineProps(['brands', 'models'])
-const emit = defineEmits(['selectedBrandEmit', 'selectedModelEmit'])
+const props = defineProps(['brands', 'models', 'selectedBrand', 'selectedModel'])
+const emit = defineEmits(['update:selectedBrand', 'update:selectedModel'])
 const { brands, models } = toRefs(props)
 
-let selectedBrand = ref(null)
-let selectedModel = ref(null)
-
 const modelsBySelectedBrand = computed(() => {
-  return models.value.filter((model) => model.brand_id === selectedBrand.value)
+  return models.value.filter((model) => model.brand_id === props.selectedBrand)
 })
 
-const changeModel = (e) => {
-  selectedModel.value = null
-  emit('selectedBrandEmit', e.target.value)
-}
+const selectedBrand = computed({
+  get() {
+    return props.selectedBrand
+  },
+  set(value) {
+    selectedModel.value = null
+    emit('update:selectedBrand', value)
+  }
+})
+
+const selectedModel = computed({
+  get() {
+    return props.selectedModel
+  },
+  set(value) {
+    emit('update:selectedModel', value)
+  }
+})
 
 </script>
