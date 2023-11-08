@@ -3,9 +3,11 @@ import MainFooter from '@/Components/MainFooter.vue';
 import NavBar from '@/Components/NavBar.vue';
 import SelectOptionsBrandModel from '@/Components/SelectOptionsBrandModel.vue';
 import SelectOptionsBrandModelWithVModel from '@/Components/SelectOptionsBrandModelWithVModel.vue';
+import SelectOptionsVuetify from '@/Components/SelectOptionsVuetify.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
-import { toRefs, computed, ref } from 'vue';
+
+import { Head } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 const props = defineProps({
   canLogin: {
@@ -30,9 +32,10 @@ let selectedModel = ref(null)
 
 <template>
   <Head title="Welcome" />
-  <NavBar/>
+  <NavBar />
   <MainLayout>
-    <div class="max-w-[900px] mx-auto border dark:border-[#28896b] rounded-sm mt-16 h-[300px] dark:bg-[#41414124]">
+    <div class="max-w-[900px] p-3 mx-auto myBorder border dark:border-[#28896b] rounded-sm mt-16 h-[300px] dark:bg-[#41414124]">
+      
       <!-- <SelectOptionsBrandModel
         :brands="brands"
         :models="models"
@@ -40,7 +43,14 @@ let selectedModel = ref(null)
         @selected-model-emit="selectedModel = $event;"
       /> -->
 
-      <SelectOptionsBrandModelWithVModel
+      <!-- <SelectOptionsBrandModelWithVModel
+        :brands="brands"
+        :models="models"
+        v-model:selected-brand="selectedBrand"
+        v-model:selected-model="selectedModel"
+      /> -->
+
+      <SelectOptionsVuetify
         :brands="brands"
         :models="models"
         v-model:selected-brand="selectedBrand"
@@ -50,5 +60,14 @@ let selectedModel = ref(null)
     </div>
   </MainLayout>
 
-  <MainFooter/>
+  <MainFooter />
 </template>
+
+<style>
+
+.myBorder {
+  border-color: #54dbc270 !important;
+}
+
+
+</style>
