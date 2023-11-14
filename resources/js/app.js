@@ -11,22 +11,24 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import colors from 'vuetify/lib/util/colors'
+import '@mdi/font/css/materialdesignicons.css'
 
 const vuetify = createVuetify({
   components,
   directives,
   theme: {
-    // defaultTheme: 'dark',
-    themes: {
-      light: {
-        dark: true,
-        colors: {
-          primary: '#E53935',
-          secondary: colors.red.lighten4,
-        }
-      },
-    },
+    defaultTheme: 'dark',
+    // themes: {
+    //   light: {
+    //     dark: true,
+    //     colors: {
+    //       primary: '#E53935',
+    //       secondary: colors.red.lighten4,
+    //     }
+    //   },
+    // },
   },
+  treeShake: true
 })
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";

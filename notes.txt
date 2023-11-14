@@ -1,2 +1,24 @@
 https://github.com/staudenmeir/belongs-to-through
 composer require staudenmeir/belongs-to-through:"^2.5"
+
+$models = Models::select('models.id', 'models.name', 'models.brand_id', DB::raw('COUNT(vehicles.model_id) as vehicles_count'))
+      ->leftJoin('vehicles', 'vehicles.model_id', '=', 'models.id')
+      ->groupBy('models.id', 'models.name', 'models.brand_id')
+      ->get();
+
+---------------------------------
+      <SelectOptionsBrandModel
+        :brands="brands"
+        :models="models"
+        @selected-brand-emit="selectedBrand = $event;"
+        @selected-model-emit="selectedModel = $event;"
+      />
+
+      <SelectOptionsBrandModelWithVModel
+        :brands="brands"
+        :models="models"
+        v-model:selected-brand="selectedBrand"
+        v-model:selected-model="selectedModel"
+      />
+
+--------------------------------------

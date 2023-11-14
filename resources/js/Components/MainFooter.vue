@@ -1,5 +1,5 @@
 <template>
-  <footer class="w-full h-40 bg-gray-100 shadow-sm dark:bg-[#28896b]">
+  <footer class="tw-w-full tw-h-40 tw-bg-gray-100 tw-shadow-sm dark:tw-bg-[#28896b]">
     <div class="container container-sm">
       Footer
     </div>

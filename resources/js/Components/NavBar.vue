@@ -1,10 +1,10 @@
 <template>
-  <nav class="sticky top-0 z-10 w-full shadow-sm h-[50px] bg-gray-100 dark:bg-[rgba(33,250,182,0.57)] backdrop-blur-sm opacity-80">
-    <div class="container container-sm mx-auto w-full h-full flex items-center">
-      <div class="text-[30px] me-auto">
+  <nav class="tw-sticky tw-top-0 tw-z-10 tw-w-full tw-shadow-sm tw-h-[50px] tw-bg-gray-100 dark:tw-bg-[rgba(33,250,182,0.57)] tw-backdrop-blur-sm tw-opacity-80 tw-text-black">
+    <div class="tw-container tw-container-sm tw-mx-auto tw-w-full tw-h-full tw-flex tw-items-center">
+      <div class="tw-text-[30px] tw-me-auto">
         ICON
       </div>
-      <div class="flex gap-4 ms-auto text-[20px]">
+      <div class="tw-flex tw-gap-4 tw-ms-auto tw-text-[20px]">
         <Link href="/">Login</Link>
         <Link href="/">Register</Link>
       </div>

@@ -8,17 +8,26 @@
         item-value="id"
         v-model="selectedBrand"
         variant="outlined"
-      ></v-autocomplete>
+        clearable
+      >
+        <template v-slot:item="{ props, item }">
+          <v-list-item v-bind="props" bg-color="transparent">
+            <template v-slot:prepend>
+              <v-avatar image="https://picsum.photos/300/300" rounded="0"></v-avatar>
+            </template>
+          </v-list-item>
+        </template>
+      </v-autocomplete>
     </div>
     <div>
       <v-autocomplete
         label="Select Model"
         :items="modelsBySelectedBrand"
-        item-title="name"
-        item-value="id"
         v-model="selectedModel"
         :disabled="selectedBrand === null"
         variant="outlined"
+        :item-props="modelProps"
+        clearable
       ></v-autocomplete>
     </div>
   </div>
@@ -54,11 +63,22 @@ const selectedModel = computed({
   }
 })
 
-// onMounted(() => {
-//   selectedBrand.value = null
-//   selectedModel.value = null
-// }),
+const modelProps = (model) => {
+  let subtitle;
+  if (model.vehicles.length === 1) {
+    subtitle = model.vehicles.length + ' vehicle'
+  } else if (model.vehicles.length > 0) {
+    subtitle = model.vehicles.length + ' vehicles'
+  } else {
+    subtitle = '0 vehicles'
+  }
 
+  return {
+    title: model.name,
+    value: model.id,
+    subtitle: subtitle
+  }
+}
 </script>
 
 <style scoped>

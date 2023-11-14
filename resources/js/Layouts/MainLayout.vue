@@ -1,5 +1,5 @@
 <template>
-  <main class="container container-sm min-h-screen mx-auto">
+  <main class="tw-container tw-container-sm tw-min-h-screen tw-mx-auto">
     <slot/>
   </main>
 </template>

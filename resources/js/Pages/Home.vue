@@ -1,9 +1,10 @@
 <script setup>
 import MainFooter from '@/Components/MainFooter.vue';
 import NavBar from '@/Components/NavBar.vue';
-import SelectOptionsBrandModel from '@/Components/SelectOptionsBrandModel.vue';
-import SelectOptionsBrandModelWithVModel from '@/Components/SelectOptionsBrandModelWithVModel.vue';
-import SelectOptionsVuetify from '@/Components/SelectOptionsVuetify.vue';
+import SelectMinMaxYear from '@/Components/SelectOptions/SelectMinMaxYear.vue';
+import SelectOptionsBrandModel from '@/Components/SelectOptions/SelectOptionsBrandModel.vue';
+import SelectOptionsBrandModelWithVModel from '@/Components/SelectOptions/SelectOptionsBrandModelWithVModel.vue';
+import SelectOptionsVuetify from '@/Components/SelectOptions/SelectOptionsVuetify.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 
 import { Head } from '@inertiajs/vue3';
@@ -22,11 +23,16 @@ const props = defineProps({
   models: {
     type: Object
   },
+  years: {
+    type: Array
+  }
 });
 // const { brands, models } = toRefs(props)
 
 let selectedBrand = ref(null)
 let selectedModel = ref(null)
+let selectedMinYear = ref(null)
+let selectedMaxYear = ref(null)
 
 </script>
 
@@ -34,40 +40,40 @@ let selectedModel = ref(null)
   <Head title="Welcome" />
   <NavBar />
   <MainLayout>
-    <div class="max-w-[900px] p-3 mx-auto myBorder border dark:border-[#28896b] rounded-sm mt-16 h-[300px] dark:bg-[#41414124]">
-      
-      <!-- <SelectOptionsBrandModel
-        :brands="brands"
-        :models="models"
-        @selected-brand-emit="selectedBrand = $event;"
-        @selected-model-emit="selectedModel = $event;"
-      /> -->
+    <!-- Main Page Filter -->
+    <div class="tw-max-w-[900px] tw-p-3 tw-mx-auto tw-border dark:tw-border-[#28896b] tw-rounded-sm tw-mt-16 tw-h-[300px] dark:tw-bg-[#41414124]">
 
-      <!-- <SelectOptionsBrandModelWithVModel
-        :brands="brands"
-        :models="models"
-        v-model:selected-brand="selectedBrand"
-        v-model:selected-model="selectedModel"
-      /> -->
+      <div>
+        <SelectOptionsVuetify
+          :brands="brands"
+          :models="models"
+          v-model:selected-brand="selectedBrand"
+          v-model:selected-model="selectedModel"
+        />
+      </div>
 
-      <SelectOptionsVuetify
-        :brands="brands"
-        :models="models"
-        v-model:selected-brand="selectedBrand"
-        v-model:selected-model="selectedModel"
-      />
+      <div>
+        <SelectMinMaxYear
+          :years="years"
+          v-model:selected-min-year="selectedMinYear"
+          v-model:selected-max-year="selectedMaxYear"
+        />
+      </div>
+
+      <div class="tw-flex tw-gap-3">
+        <v-btn variant="outlined" color="teal-lighten-3">More options</v-btn>
+        <v-btn color="teal-darken-3" prepend-icon="mdi-magnify">Search</v-btn>
+      </div>
+
+      <!-- <v-btn color="teal-darken-3">
+        <template v-slot:prepend>
+          <v-icon color="red-darken-4" icon="mdi-magnify"></v-icon>
+        </template>
+        btn
+      </v-btn> -->
 
     </div>
   </MainLayout>
 
   <MainFooter />
 </template>
-
-<style>
-
-.myBorder {
-  border-color: #54dbc270 !important;
-}
-
-
-</style>
