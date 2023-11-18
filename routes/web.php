@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -31,6 +33,12 @@ use Inertia\Inertia;
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
+
+Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
+Route::get('/dashboard/brands', [AdminController::class, 'brands'])->name('dashboard.brands');
+Route::post('/dashboard/brands', [AdminController::class, 'storeBrand'])->name('dashboard.brands.store');
+Route::delete('/dashboard/brands/{id}', [AdminController::class, 'deleteBrand'])->name('dashboard.brands.delete');
+Route::post('/dashboard/brands/{id}', [AdminController::class, 'updateBrand'])->name('dashboard.brands.update');
 
 Route::middleware('auth')->group(function () {
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -1,8 +1,10 @@
 <template>
-  <nav class="tw-sticky tw-top-0 tw-z-10 tw-w-full tw-shadow-sm tw-h-[50px] tw-bg-gray-100 dark:tw-bg-[rgba(33,250,182,0.57)] tw-backdrop-blur-sm tw-opacity-80 tw-text-black">
+  <nav class="tw-sticky tw-top-0 tw-z-10 tw-w-full tw-shadow-sm tw-h-full tw-bg-gray-100 dark:tw-bg-[rgba(33,250,182,0.57)] tw-backdrop-blur-sm tw-opacity-80 tw-text-black">
     <div class="tw-container tw-container-sm tw-mx-auto tw-w-full tw-h-full tw-flex tw-items-center">
       <div class="tw-text-[30px] tw-me-auto">
-        ICON
+        <Link href="/">
+          <img width="100" class="tw-rounded-lg" src="/car-logo2.jpeg" alt="">
+        </Link>
       </div>
       <div class="tw-flex tw-gap-4 tw-ms-auto tw-text-[20px]">
         <Link href="/">Login</Link>
