@@ -60,7 +60,7 @@ const selectedMaxYear = computed({
 
 <style scoped>
 
-.vuetifySelect >>> input {
+.vuetifySelect:deep() input {
   background-color: transparent !important;
   box-shadow: none;
 }

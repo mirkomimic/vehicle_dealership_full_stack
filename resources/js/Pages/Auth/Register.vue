@@ -1,103 +1,158 @@
+<template>
+  <GuestLayout>
+
+    <Head title="Log in" />
+
+    <div class="h-screen d-flex justify-center ">
+      <v-sheet class="d-flex flex-column justify-center my-auto pa-5" height="500" width="700" rounded>
+        <div class="text-h4 text-center text-uppercase  text-teal-lighten-3 ">Register</div>
+        <v-form @submit.prevent="submit" class="vuetifySelect">
+
+          <v-container fluid>
+            <v-row>
+              <v-col
+                class="mx-auto"
+                cols="12"
+                md="8"
+              >
+                <div class="mx-auto">
+                  <v-text-field
+                    v-model="form.name"
+                    :rules="passwordRules"
+                    :error-messages="form.errors.name"
+                    label="Name"
+                    variant="underlined"
+                    base-color="teal-lighten-3" color="teal-lighten-3"
+                  />
+                </div>
+
+                <div class="mx-auto">
+                  <v-text-field
+                    v-model="form.email"
+                    :rules="emailRules"
+                    :error-messages="form.errors.email"
+                    label="Email"
+                    variant="underlined"
+                    base-color="teal-lighten-3" color="teal-lighten-3"
+                  />
+                </div>
+
+                <div class="mx-auto">
+                  <v-text-field
+                    v-model="form.password"
+                    :rules="passwordRules"
+                    :error-messages="form.errors.password"
+                    label="Password"
+                    variant="underlined"
+                    base-color="teal-lighten-3" color="teal-lighten-3"
+                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show1 ? 'text' : 'password'"
+                    @click:append="show1 = !show1"
+                  />
+                </div>
+
+                <div class="mx-auto">
+                  <v-text-field
+                    v-model="form.password_confirmation"
+                    :rules="[passwordRules, passwordConfirationRule]"
+                    :error-messages="form.errors.password_confirmation"
+                    label="Password confimation"
+                    variant="underlined"
+                    base-color="teal-lighten-3" color="teal-lighten-3"
+                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show2 ? 'text' : 'password'"
+                    @click:append="show2 = !show2"
+                  />
+                </div>
+
+                <div class="mx-auto d-flex mt-8">
+                  <v-btn
+                    type="submit"
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                    class="mx-auto"
+                    variant="tonal"
+                    color="teal-lighten-3"
+                  >
+                    Register
+                  </v-btn>
+                </div>
+
+                <div class="mx-auto mt-5 text-center text-teal-lighten-4">
+                    <Link
+                      :href="route('login')"
+                    >
+                      Already have an account? Log in.
+                    </Link>
+                </div>
+
+              </v-col>
+            </v-row>
+          </v-container>
+
+        </v-form>
+      </v-sheet>
+    </div>
+  </GuestLayout>
+</template>
+
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, useForm, Link } from '@inertiajs/vue3';
+import { computed } from 'vue';
+import { ref } from 'vue';
+
+const show1 = ref(false);
+const show2 = ref(false);
 
 const form = useForm({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
+  name: '',
+  email: '',
+  password: '',
+  password_confirmation: '',
 });
 
 const submit = () => {
-    form.post(route('register'), {
-        onFinish: () => form.reset('password', 'password_confirmation'),
-    });
+  form.post(route('register'), {
+    onFinish: () => form.reset('password', 'password_confirmation'),
+  });
 };
+
+const passwordRules = [
+  value => {
+    if (value) return true
+
+    return 'The password field is required.'
+  },
+  // value => {
+  //   if (value?.length <= 10) return true
+
+  //   return 'Name must be less than 10 characters.'
+  // },
+];
+
+const passwordConfirationRule = computed(() => {
+  return form.password_confirmation === form.password || 'Password must match'
+})
+
+const emailRules = [
+  value => {
+    if (value) return true
+
+    return 'The email field is required.'
+  },
+  value => {
+    if (/.+@.+\..+/.test(value)) return true
+
+    return 'The email field must be a valid email address.'
+  },
+]
+
 </script>
 
-<template>
-    <GuestLayout>
-        <Head title="Register" />
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="name" value="Name" />
-
-                <TextInput
-                    id="name"
-                    type="text"
-                    class="mt-1 block w-full"
-                    v-model="form.name"
-                    required
-                    autofocus
-                    autocomplete="name"
-                />
-
-                <InputError class="mt-2" :message="form.errors.name" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="email" value="Email" />
-
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autocomplete="username"
-                />
-
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password_confirmation"
-                    required
-                    autocomplete="new-password"
-                />
-
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <Link
-                    :href="route('login')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                >
-                    Already registered?
-                </Link>
-
-                <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Register
-                </PrimaryButton>
-            </div>
-        </form>
-    </GuestLayout>
-</template>
+<style scoped>
+.vuetifySelect:deep() input {
+  background-color: transparent !important;
+  box-shadow: none;
+}
+</style>

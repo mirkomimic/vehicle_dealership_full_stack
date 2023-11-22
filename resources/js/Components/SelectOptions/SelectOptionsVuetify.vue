@@ -4,16 +4,17 @@
       <v-autocomplete
         label="Select Brand"
         :items="brands"
-        item-title="name"
-        item-value="id"
         v-model="selectedBrand"
         variant="outlined"
+        :item-props="brandProps"
         clearable
       >
         <template v-slot:item="{ props, item }">
           <v-list-item v-bind="props" bg-color="transparent">
             <template v-slot:prepend>
-              <v-avatar image="https://picsum.photos/300/300" rounded="0"></v-avatar>
+              <v-avatar>
+                <v-img :src="'/storage/images/brands/'+props.props.image"></v-img>
+              </v-avatar>
             </template>
           </v-list-item>
         </template>
@@ -79,10 +80,20 @@ const modelProps = (model) => {
     subtitle: subtitle
   }
 }
+
+const brandProps = (brand) => {
+  return {
+    title: brand.name,
+    value: brand.id,
+    props: {
+      image: brand.image
+    }
+  }
+}
 </script>
 
 <style scoped>
-.vuetifySelect >>> input {
+.vuetifySelect:deep() input {
   background-color: transparent !important;
   box-shadow: none;
 }

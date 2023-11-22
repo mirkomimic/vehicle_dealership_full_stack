@@ -1,14 +1,14 @@
 <script setup>
 import MainFooter from '@/Components/MainFooter.vue';
-import NavBar from '@/Components/NavBar.vue';
 import SelectMinMaxYear from '@/Components/SelectOptions/SelectMinMaxYear.vue';
-import SelectOptionsBrandModel from '@/Components/SelectOptions/SelectOptionsBrandModel.vue';
-import SelectOptionsBrandModelWithVModel from '@/Components/SelectOptions/SelectOptionsBrandModelWithVModel.vue';
 import SelectOptionsVuetify from '@/Components/SelectOptions/SelectOptionsVuetify.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 
+import { useTheme } from 'vuetify'
+
 import { Head } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import VueCarousel from '@/Components/Gallery/VueCarousel.vue';
 
 const props = defineProps({
   canLogin: {
@@ -27,21 +27,32 @@ const props = defineProps({
     type: Array
   }
 });
-// const { brands, models } = toRefs(props)
 
 let selectedBrand = ref(null)
 let selectedModel = ref(null)
 let selectedMinYear = ref(null)
 let selectedMaxYear = ref(null)
 
+const resetFilter = () => {
+  selectedBrand.value = null;
+  selectedModel.value = null;
+  selectedMinYear.value = null;
+  selectedMaxYear.value = null;
+}
+
+const theme = useTheme()
+
+const switchColor = computed(() => {
+  return theme.global.current.value.dark  ? 'teal-lighten-3' : 'teal-darken-3';
+})
 </script>
 
 <template>
   <Head title="Welcome" />
-  <NavBar />
+
   <MainLayout>
     <!-- Main Page Filter -->
-    <div class="tw-max-w-[900px] tw-p-3 tw-mx-auto tw-border dark:tw-border-[#28896b] tw-rounded-sm tw-mt-16 tw-h-[300px] dark:tw-bg-[#41414124]">
+    <v-sheet class="pa-5 mt-16 mx-auto mm-border-green" :width="900" border="sm" rounded>
 
       <div>
         <SelectOptionsVuetify
@@ -52,6 +63,7 @@ let selectedMaxYear = ref(null)
         />
       </div>
 
+
       <div>
         <SelectMinMaxYear
           :years="years"
@@ -61,19 +73,28 @@ let selectedMaxYear = ref(null)
       </div>
 
       <div class="tw-flex tw-gap-3">
-        <v-btn variant="outlined" color="teal-lighten-3">More options</v-btn>
+        <v-btn variant="outlined" :color="switchColor">More options</v-btn>
         <v-btn color="teal-darken-3" prepend-icon="mdi-magnify">Search</v-btn>
+        <v-btn @click="resetFilter" variant="plain" class="px-0">
+          <span class="tw-underline">Clear search</span>
+        </v-btn>
       </div>
+      
+    </v-sheet>
 
-      <!-- <v-btn color="teal-darken-3">
-        <template v-slot:prepend>
-          <v-icon color="red-darken-4" icon="mdi-magnify"></v-icon>
-        </template>
-        btn
-      </v-btn> -->
+    <v-divider class="mt-16 mb-8 mx-10"></v-divider>
 
-    </div>
+    <div class="text-h4  text-center text-uppercase">Title</div>
+    <v-sheet>
+      <VueCarousel/>
+    </v-sheet>
   </MainLayout>
+  <MainFooter/>
 
-  <MainFooter />
 </template>
+
+<style scoped>
+.mm-border-green {
+  border-color: #28896b !important;
+}
+</style>

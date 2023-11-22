@@ -34,13 +34,14 @@ use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
-Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
-Route::get('/dashboard/brands', [AdminController::class, 'brands'])->name('dashboard.brands');
-Route::post('/dashboard/brands', [AdminController::class, 'storeBrand'])->name('dashboard.brands.store');
-Route::delete('/dashboard/brands/{id}', [AdminController::class, 'deleteBrand'])->name('dashboard.brands.delete');
-Route::post('/dashboard/brands/{id}', [AdminController::class, 'updateBrand'])->name('dashboard.brands.update');
 
 Route::middleware('auth')->group(function () {
+  Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
+  Route::get('/dashboard/brands', [AdminController::class, 'brands'])->name('dashboard.brands');
+  Route::post('/dashboard/brands', [AdminController::class, 'storeBrand'])->name('dashboard.brands.store');
+  Route::delete('/dashboard/brands/{id}', [AdminController::class, 'deleteBrand'])->name('dashboard.brands.delete');
+  Route::post('/dashboard/brands/{id}', [AdminController::class, 'updateBrand'])->name('dashboard.brands.update');
+
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

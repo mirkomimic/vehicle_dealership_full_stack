@@ -1,6 +1,6 @@
 <template>
   <v-layout class="rounded rounded-md">
-    <v-app-bar height="50">
+    <v-app-bar class="tw-backdrop-blur-sm tw-opacity-80">
       <NavBar></NavBar>
     </v-app-bar>
 
@@ -12,9 +12,9 @@
     >
       <v-list>
         <v-list-item
-          prepend-avatar="https://randomuser.me/api/portraits/women/85.jpg"
-          title="Sandra Adams"
-          subtitle="sandra_a88@gmailcom"
+          :prepend-avatar="$page.props.auth.user.image || '/user-placeholder.png'"
+          :title="$page.props.auth.user.name"
+          :subtitle="$page.props.auth.user.email"
         ></v-list-item>
       </v-list>
 
@@ -33,7 +33,11 @@
     </v-navigation-drawer>
 
     <v-main class="h-100" style="">
-        <slot/>
+        <v-fade-transition>
+          <div v-if="animatePage">
+            <slot/>
+          </div>
+        </v-fade-transition>
       </v-main>
   </v-layout>
 </template>
@@ -41,7 +45,14 @@
 <script setup>
 import NavBar from '@/Components/NavBar.vue';
 import { Link } from '@inertiajs/vue3';
+import { onMounted } from 'vue';
+import { ref } from 'vue';
 
+let animatePage = ref(false)
+
+onMounted(() => {
+  animatePage = true
+})
 
 </script>
 

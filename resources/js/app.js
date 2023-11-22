@@ -18,15 +18,7 @@ const vuetify = createVuetify({
   directives,
   theme: {
     defaultTheme: 'dark',
-    // themes: {
-    //   light: {
-    //     dark: true,
-    //     colors: {
-    //       primary: '#E53935',
-    //       secondary: colors.red.lighten4,
-    //     }
-    //   },
-    // },
+
   },
   treeShake: true
 })
@@ -48,7 +40,9 @@ createInertiaApp({
       .mount(el);
     },
     progress: {
-      color: "#4B5563",
+      color: '#30d191',
+      delay: 250,
     },
+  
     
 });

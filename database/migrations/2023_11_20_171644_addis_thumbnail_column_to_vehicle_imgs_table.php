@@ -11,13 +11,8 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('vehicle_imgs', function (Blueprint $table) {
-      $table->id();
-      $table->unsignedBigInteger('vehicle_id');
-      $table->string('img');
-      $table->timestamps();
-
-      $table->foreign('vehicle_id')->references('id')->on('vehicles')->onDelete('cascade');
+    Schema::table('vehicle_imgs', function (Blueprint $table) {
+      $table->boolean('isThumbnail')->nullable();
     });
   }
 
@@ -26,6 +21,8 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::dropIfExists('vehicle_imgs');
+    Schema::table('vehicle_imgs', function (Blueprint $table) {
+      $table->dropColumn('isThumbnail');
+    });
   }
 };

@@ -41,7 +41,7 @@ const defaultItem = ref({
 })
 
 const formTitle = computed(() => {
-  return editedIndex.value === -1 ? 'New Item' : 'Edit Item'
+  return editedIndex.value === -1 ? 'New Brand' : 'Edit Brand'
 })
 
 watch(dialogTable, (val) => {
@@ -87,6 +87,7 @@ const close = () => {
     editedIndex.value = -1
     usePage().props.errors.name = null
     formTable.reset();
+    brandImgPreview.value = null
   })
 }
 const closeDelete = () => {
@@ -151,6 +152,13 @@ const save = () => {
     }
   }
 }
+
+const brandImgPreview = ref(null)
+
+const setImg = (e) => {
+  formTable.image = e.target.files[0]
+  brandImgPreview.value = URL.createObjectURL(e.target.files[0])
+}
 </script>
 
 <template>
@@ -176,6 +184,8 @@ const save = () => {
         </v-fade-transition>
       </div>
     </div>
+
+    <div class="text-h4 text-teal-darken-1 text-uppercase text-center mt-5">Brands</div>
 
     <!-- data table -->
     <div class="tw-w-full tw-overflow-x-auto">
@@ -223,14 +233,13 @@ const save = () => {
 
                   <v-progress-linear
                     :active="progressTextInput"
-
                     color="teal-darken-3"
                     height="7"
                     indeterminate
                   ></v-progress-linear>
 
                   <v-card-title>
-                    <span class="text-h5">{{ formTitle }}</span>
+                    <span class="text-h5 text-teal-lighten-3">{{ formTitle }}</span>
                   </v-card-title>
                   <v-card-text>
                     <v-container>
@@ -251,11 +260,21 @@ const save = () => {
                           cols="12"
                         >
                           <v-file-input
-                            @input="formTable.image = $event.target.files[0]"
+                            @change="setImg"
                             label="Add Image"
                             variant="filled"
                             prepend-icon="mdi-camera"
                           ></v-file-input>
+                        </v-col>
+                        <v-col
+                          cols="12"
+                        >
+                          <v-sheet class="d-flex justify-center">
+                            <v-img v-if="brandImgPreview" :src="brandImgPreview" width="100" height="100"></v-img>
+                            <v-sheet v-else border="sm" rounded class="d-flex justify-center items-center pa-2" width="200" height="100">
+                              <v-icon icon="mdi-image-frame" size="50" class="mt-3" color="teal-lighten-3"></v-icon>
+                            </v-sheet>
+                          </v-sheet>
                         </v-col>
                       </v-row>
                     </v-container>
@@ -263,14 +282,14 @@ const save = () => {
                   <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn
-                      color="blue-darken-1"
+                      color="teal-lighten-3"
                       variant="text"
                       @click="close"
                     >
                       Cancel
                     </v-btn>
                     <v-btn
-                      color="blue-darken-1"
+                      color="teal-lighten-3"
                       variant="text"
                       @click="save"
                     >
@@ -316,14 +335,6 @@ const save = () => {
               mdi-delete
             </v-icon>
           </template>
-          <!-- <template v-slot:no-data>
-            <v-btn
-              color="primary"
-              @click="initialize"
-            >
-              Reset
-            </v-btn>
-          </template> -->
         </v-data-table>
       </div>
     </div>
@@ -332,7 +343,7 @@ const save = () => {
 </template>
 
 <style scoped>
-.vuetifyInput >>> input {
+.vuetifyInput:deep() input {
   background-color: transparent !important;
   box-shadow: none;
 }
