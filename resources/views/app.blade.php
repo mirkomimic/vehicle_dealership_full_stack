@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="{{ url('/car-logo2.jpeg') }}">
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
@@ -15,7 +16,6 @@
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
-    {{-- dark:tw-bg-[#202124] --}}
     <body class="font-sans antialiased ">
         @inertia
     </body>

@@ -2,6 +2,9 @@
   <v-menu
     open-on-hover
     location="bottom"
+    open-delay="50"
+    close-delay="50"
+    transition="fade-transition"
   >
     <template v-slot:activator="{ props }">
       <v-btn
@@ -14,12 +17,19 @@
       </v-btn>
     </template>
 
-    <v-list>
-      <v-list-item>
-        <v-btn class="w-100" prepend-icon="mdi-account" :href="route('profile.edit')" type="submit">Profile</v-btn>
-      </v-list-item>
-      <v-list-item>
-        <v-btn class="w-100" @click="logout" prepend-icon="mdi-logout" type="submit">Logout</v-btn>
+
+    <v-list density="compact" rounded="lg">
+      <v-list-item
+        v-for="(item, index) in items"
+        :key="index"
+        :value="index"
+        :append-icon="item.icon"
+      >
+        <v-list-item-title
+          @click="item.action"
+          class="font-weight-bold"
+          >{{ item.title }}
+        </v-list-item-title>
       </v-list-item>
     </v-list>
   </v-menu>
@@ -28,8 +38,22 @@
 <script setup>
 import { router } from '@inertiajs/vue3';
 
-const logout = () => {
-  router.post(route('logout'));
-}
+const items = [
+  {
+    icon: 'mdi-account',
+    title: 'Profile',
+    action: () => router.get(route('profile.edit'))
+  },
+  {
+    icon: 'mdi-car-back',
+    title: 'My Vehicles',
+    action: () => router.get(route('vehicles.index'))
+  },
+  {
+    icon: 'mdi-logout',
+    title: 'Logout',
+    action: () => router.post(route('logout'))
+  },
+]
 </script>
 

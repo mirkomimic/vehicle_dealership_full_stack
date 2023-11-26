@@ -9,9 +9,9 @@
       <NavBar></NavBar>
     </v-app-bar>
 
-    <v-main class="tw-min-h-screen">
+    <v-main class="h-screen">
       <v-fade-transition>
-        <div v-if="animatePage">
+        <div v-if="animatePage" class="">
           <slot/>
         </div>
       </v-fade-transition>

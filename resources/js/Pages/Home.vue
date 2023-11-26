@@ -25,6 +25,9 @@ const props = defineProps({
   },
   years: {
     type: Array
+  },
+  latestVehicles: {
+    type: Object,
   }
 });
 
@@ -84,12 +87,18 @@ const switchColor = computed(() => {
 
     <v-divider class="mt-16 mb-8 mx-10"></v-divider>
 
-    <div class="text-h4  text-center text-uppercase">Title</div>
-    <v-sheet>
-      <VueCarousel/>
+    <div class="text-h4 text-center text-uppercase text-teal-darken-1 mb-3">Latest</div>
+
+    <v-sheet color="transparent">
+      <VueCarousel :latestVehicles="latestVehicles"/>
     </v-sheet>
+
+    <v-divider class="mt-16 mb-8 mx-10"></v-divider>
+
+    <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur labore iste commodi aperiam repellendus libero provident illo soluta cum. Animi sed, quos tempora iusto ut libero suscipit ipsum ipsa consequatur!</div>
+
+    <MainFooter/>
   </MainLayout>
-  <MainFooter/>
 
 </template>
 

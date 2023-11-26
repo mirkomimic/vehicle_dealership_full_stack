@@ -22,12 +22,20 @@
 
       <v-list density="compact" nav>
         <Link :href="route('dashboard.index')">
-          <v-list-item prepend-icon="mdi-home-variant" title="Home" value="Home">
-          </v-list-item>
+          <v-list-item
+            prepend-icon="mdi-home-variant"
+            :active="$page.url == '/dashboard'"
+            title="Home"
+            value="Home"
+          ></v-list-item>
         </Link>
         <Link :href="route('dashboard.brands')">
-          <v-list-item prepend-icon="mdi-folder" title="Brands" value="Brands">
-          </v-list-item>
+          <v-list-item
+            prepend-icon="mdi-folder"
+            :active="$page.url == '/dashboard/brands'"
+            title="Brands"
+            value="Brands"
+          ></v-list-item>
         </Link>
       </v-list>
     </v-navigation-drawer>

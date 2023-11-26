@@ -56,7 +56,7 @@
                     v-model="form.password_confirmation"
                     :rules="[passwordRules, passwordConfirationRule]"
                     :error-messages="form.errors.password_confirmation"
-                    label="Password confimation"
+                    label="Password confirmation"
                     variant="underlined"
                     base-color="teal-lighten-3" color="teal-lighten-3"
                     :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"

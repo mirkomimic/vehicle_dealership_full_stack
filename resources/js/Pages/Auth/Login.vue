@@ -32,10 +32,13 @@
                     v-model="form.password"
                     :rules="passwordRules"
                     :error-messages="form.errors.password"
-                    :type="'password'"
+                    autocomplete
                     label="Password"
                     variant="underlined"
                     base-color="teal-lighten-3" color="teal-lighten-3"
+                    :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show ? 'text' : 'password'"
+                    @click:append="show = !show"
                   />
                 </div>
 
@@ -86,6 +89,7 @@
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, useForm, Link } from '@inertiajs/vue3';
+import { ref } from 'vue';
 
 defineProps({
   canResetPassword: {
@@ -95,6 +99,8 @@ defineProps({
   //   type: String,
   // },
 });
+
+const show = ref(false)
 
 const form = useForm({
   email: '',
