@@ -2,24 +2,30 @@
   <Head title="My Vehicles" />
 
   <MainLayout>
-      <div >
-        <!-- color="rgba(33,250,182,0.7)" -->
-        <v-fade-transition>
-          <v-alert
-            v-if="$page.props.flash.success"
-            position="fixed"
-            location="top right"
-            style="top: 70px;"
-            closable
-            icon="mdi-check"
-            title="Message"
-            :text="$page.props.flash.success"
-            variant="flat"
-            theme="light"
-            color="rgba(33,250,182,0.7)"
-            width="300"
-          ></v-alert>
-        </v-fade-transition>
+      <div class="text-center">
+        <v-snackbar
+          v-model="$page.props.flash.success"
+          location="top right"
+          position="fixed"
+          timeout="5000"
+          variant="elevated"
+          color="rgba(33,250,182,0.7)"
+          vertical
+        >
+          <div class="text-subtitle-1 pb-2 font-weight-bold">Message</div>
+
+          <p>{{ $page.props.flash.success }}</p>
+
+          <template v-slot:actions>
+            <v-btn
+              color="black"
+              variant="text"
+              @click="$page.props.flash.success = false"
+            >
+              Close
+            </v-btn>
+          </template>
+        </v-snackbar>
       </div>
 
       <div class="text-h5 text-center text-uppercase mt-5 text-teal-darken-1">My Vehicles</div>
@@ -167,8 +173,8 @@
       </v-row>
     </v-sheet>
 
-    <MainFooter/>
   </MainLayout>
+  <MainFooter/>
 </template>
 
 <script setup>
@@ -224,19 +230,13 @@ const setImgs = (e) => {
 
 const addNewVehicle = () => {
   addVehicleForm.post(route('vehicles.store'), {
-    // preserveState: (page) => Object.keys(addVehicleForm.errors).length,
-    // preserveState: true,
-    onError: () => null,
+    // onError: () => null,
     onSuccess: () => {
       addVehicleProgress.value = true
       addVehicleForm.reset()
 
       setTimeout(() => {
         addVehicleProgress.value = false
-
-        // selectedBrand.value = null;
-        // dialog.value = false
-        // addVehicleForm.reset()
         closeAddNewVehicle();
       }, 2000)
       setTimeout(() => {
@@ -275,4 +275,8 @@ const switchColor = computed(() => {
   background-color: transparent !important;
   box-shadow: none;
 }
+.mm-blur {
+  backdrop-filter: blur(10px);
+}
+
 </style>

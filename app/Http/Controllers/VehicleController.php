@@ -38,8 +38,6 @@ class VehicleController extends Controller
       'year' => 'required',
       'images.*' => 'image|mimes:png,jpg,jpeg',
     ]);
-    // dd($request->toArray());
-
 
     $vehicle = new Vehicle();
     $vehicle->model_id = $request->model_id;
@@ -72,7 +70,11 @@ class VehicleController extends Controller
    */
   public function show(string $id)
   {
-    //
+    $vehicle = Vehicle::with('images')->with('brand')->with('model')->find($id);
+
+    return Inertia::render('Vehicles/Show', [
+      'vehicle' => $vehicle
+    ]);
   }
 
   /**

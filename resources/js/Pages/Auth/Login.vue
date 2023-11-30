@@ -36,9 +36,9 @@
                     label="Password"
                     variant="underlined"
                     base-color="teal-lighten-3" color="teal-lighten-3"
-                    :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                    :append-inner-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show ? 'text' : 'password'"
-                    @click:append="show = !show"
+                    @click:append-inner="show = !show"
                   />
                 </div>
 

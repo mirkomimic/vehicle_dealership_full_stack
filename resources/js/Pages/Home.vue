@@ -106,4 +106,7 @@ const switchColor = computed(() => {
 .mm-border-green {
   border-color: #28896b !important;
 }
+html {
+  scroll-behavior: smooth;
+}
 </style>

@@ -1,6 +1,10 @@
 <template>
   <v-layout class="rounded rounded-md">
-    <v-app-bar class="tw-backdrop-blur-sm tw-opacity-80">
+    <v-app-bar 
+      scroll-behavior="hide"
+      scroll-threshold="50"
+      elevation="2"
+    >
       <NavBar></NavBar>
     </v-app-bar>
 
@@ -63,7 +67,3 @@ onMounted(() => {
 })
 
 </script>
-
-<style scoped>
-
-</style>

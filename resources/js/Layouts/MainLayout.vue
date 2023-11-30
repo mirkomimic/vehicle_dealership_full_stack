@@ -1,7 +1,6 @@
 <template>
   <v-layout>
     <v-app-bar 
-      class="tw-backdrop-blur-sm tw-opacity-80"
       scroll-behavior="hide"
       scroll-threshold="50"
       elevation="2"

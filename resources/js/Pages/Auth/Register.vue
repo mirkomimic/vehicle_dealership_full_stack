@@ -45,9 +45,9 @@
                     label="Password"
                     variant="underlined"
                     base-color="teal-lighten-3" color="teal-lighten-3"
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :append-inner-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show1 ? 'text' : 'password'"
-                    @click:append="show1 = !show1"
+                    @click:append-inner="show1 = !show1"
                   />
                 </div>
 
@@ -59,9 +59,9 @@
                     label="Password confirmation"
                     variant="underlined"
                     base-color="teal-lighten-3" color="teal-lighten-3"
-                    :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show2 ? 'text' : 'password'"
-                    @click:append="show2 = !show2"
+                    @click:append-inner="show2 = !show2"
                   />
                 </div>
 
