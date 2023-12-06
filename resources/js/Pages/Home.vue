@@ -6,7 +6,7 @@ import MainLayout from '@/Layouts/MainLayout.vue';
 
 import { useTheme } from 'vuetify'
 
-import { Head } from '@inertiajs/vue3';
+import { Head, useForm } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import VueCarousel from '@/Components/Gallery/VueCarousel.vue';
 
@@ -31,16 +31,25 @@ const props = defineProps({
   }
 });
 
-let selectedBrand = ref(null)
-let selectedModel = ref(null)
-let selectedMinYear = ref(null)
-let selectedMaxYear = ref(null)
+const processing = ref(false)
+
+const form = useForm({
+  brand: null,
+  model: null,
+  minYear: null,
+  maxYear: null,
+})
+
+const submit = () => {
+  processing.value = true
+  setTimeout(() => {
+    // processing.value = false
+    form.get(route('vehicles.search'));
+  }, 2000)
+}
 
 const resetFilter = () => {
-  selectedBrand.value = null;
-  selectedModel.value = null;
-  selectedMinYear.value = null;
-  selectedMaxYear.value = null;
+  form.reset()
 }
 
 const theme = useTheme()
@@ -61,8 +70,8 @@ const switchColor = computed(() => {
         <SelectOptionsVuetify
           :brands="brands"
           :models="models"
-          v-model:selected-brand="selectedBrand"
-          v-model:selected-model="selectedModel"
+          v-model:selected-brand="form.brand"
+          v-model:selected-model="form.model"
         />
       </div>
 
@@ -70,14 +79,21 @@ const switchColor = computed(() => {
       <div>
         <SelectMinMaxYear
           :years="years"
-          v-model:selected-min-year="selectedMinYear"
-          v-model:selected-max-year="selectedMaxYear"
+          v-model:selected-min-year="form.minYear"
+          v-model:selected-max-year="form.maxYear"
         />
       </div>
 
       <div class="tw-flex tw-gap-3">
         <v-btn variant="outlined" :color="switchColor">More options</v-btn>
-        <v-btn color="teal-darken-3" prepend-icon="mdi-magnify">Search</v-btn>
+        <v-btn
+          @click="submit"
+          :loading="processing"
+          :disabled="processing"
+          color="teal-darken-3"
+          prepend-icon="mdi-magnify"
+          >Search
+        </v-btn>
         <v-btn @click="resetFilter" variant="plain" class="px-0">
           <span class="tw-underline">Clear search</span>
         </v-btn>

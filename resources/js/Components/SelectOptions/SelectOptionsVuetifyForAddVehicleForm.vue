@@ -8,6 +8,7 @@
         variant="outlined"
         :item-props="brandProps"
         clearable
+        density="compact"
       >
         <template v-slot:item="{ props, item }">
           <v-list-item v-bind="props" bg-color="transparent">
@@ -29,6 +30,7 @@
         variant="outlined"
         :item-props="modelProps"
         clearable
+        density="compact"
       ></v-autocomplete>
     </div>
   </div>

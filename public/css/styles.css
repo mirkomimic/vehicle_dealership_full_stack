@@ -1,0 +1,8 @@
+.mm-blur {
+  backdrop-filter: blur(10px);
+}
+
+/* .vuetifySelect:deep() input {
+  background-color: transparent !important;
+  box-shadow: none;
+} */

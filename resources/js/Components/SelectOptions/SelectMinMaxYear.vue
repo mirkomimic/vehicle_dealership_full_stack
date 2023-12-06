@@ -5,7 +5,7 @@
         label="Min Year"
         :items="years"
         v-model="selectedMinYear"
-        density="comfortable"
+        density="compact"
         variant="outlined"
         clearable
       ></v-autocomplete>
@@ -14,7 +14,7 @@
       <v-autocomplete
         label="Max Year"
         :items="years"
-        density="comfortable"
+        density="compact"
         variant="outlined"
         v-model="selectedMaxYear"
         clearable

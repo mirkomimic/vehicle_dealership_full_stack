@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
   Route::post('/dashboard/brands/{id}', [AdminController::class, 'updateBrand'])->name('dashboard.brands.update');
 
   Route::resource('vehicles', VehicleController::class)->only('index', 'store', 'show', 'update', 'destroy');
+  Route::get('vehicles_search', [VehicleController::class, 'search'])->name('vehicles.search');
 
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

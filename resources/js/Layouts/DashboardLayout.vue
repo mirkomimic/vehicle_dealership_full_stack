@@ -44,7 +44,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main class="h-100" style="">
+    <v-main class="h-100">
         <v-fade-transition>
           <div v-if="animatePage">
             <slot/>

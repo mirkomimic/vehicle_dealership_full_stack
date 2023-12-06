@@ -7,6 +7,7 @@
         v-model="selectedBrand"
         variant="outlined"
         :item-props="brandProps"
+        density="compact"
         clearable
       >
         <template v-slot:item="{ props, item }">
@@ -28,6 +29,7 @@
         :disabled="selectedBrand === null"
         variant="outlined"
         :item-props="modelProps"
+        density="compact"
         clearable
       ></v-autocomplete>
     </div>

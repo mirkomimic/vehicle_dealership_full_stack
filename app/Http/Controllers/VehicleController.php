@@ -24,6 +24,25 @@ class VehicleController extends Controller
     ]);
   }
 
+  public function search(Request $request)
+  {
+    $filters = $request->only([
+      'brand', 'model', 'minYear', 'maxYear', 'search', 'sort'
+    ]);
+
+    $vehicles = Vehicle::query()->with('images', function ($query) {
+      return $query->where('isThumbnail', '=', true);
+    })->with('model')->with('brand')->filter($filters)->paginate(9);
+
+    return Inertia::render('Vehicles/Search', [
+      'vehicles' => $vehicles,
+      'filters' => $filters,
+      'brands' => Brand::all(),
+      'models' => Models::with('vehicles')->get(),
+      'years' => range(1990, date('Y'), 1),
+    ]);
+  }
+
   /**
    * Store a newly created resource in storage.
    */

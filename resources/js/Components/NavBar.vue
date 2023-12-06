@@ -1,9 +1,9 @@
 <template>
   <nav class="tw-w-full">
     <div class="tw-container tw-container-sm tw-mx-auto tw-w-full tw-h-full tw-flex tw-items-center">
-      <div class="tw-text-[30px]">
+      <div>
         <Link href="/">
-          <img width="100" class="tw-rounded-lg" src="/car-logo2.jpeg" alt="">
+          <img width="70" class="" src="/icons/blue-car-logo.png" alt="">
         </Link>
       </div>
       <v-spacer></v-spacer>
