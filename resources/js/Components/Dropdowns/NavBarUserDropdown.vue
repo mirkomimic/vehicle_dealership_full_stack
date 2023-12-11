@@ -1,38 +1,39 @@
 <template>
-  <v-menu
-    open-on-hover
-    location="bottom"
-    open-delay="50"
-    close-delay="50"
-    transition="fade-transition"
-  >
-    <template v-slot:activator="{ props }">
-      <v-btn
-        v-bind="props"
-        icon
-        width="40"
-        height="40"
-      >
-        <img src="/user-placeholder.png" alt="" class="rounded-circle"/>
-      </v-btn>
-    </template>
-
-
-    <v-list density="compact" rounded="lg">
-      <v-list-item
-        v-for="(item, index) in items"
-        :key="index"
-        :value="index"
-        :append-icon="item.icon"
-      >
-        <v-list-item-title
-          @click="item.action"
-          class="font-weight-bold"
-          >{{ item.title }}
-        </v-list-item-title>
-      </v-list-item>
-    </v-list>
-  </v-menu>
+  <div class="pa-2">
+    <v-menu
+      open-on-hover
+      location="bottom"
+      open-delay="50"
+      close-delay="50"
+      transition="fade-transition"
+    >
+      <template v-slot:activator="{ props }">
+        <v-btn
+          v-bind="props"
+          icon
+          width="35"
+          height="35"
+        >
+          <img src="/user-placeholder.png" alt="" class="rounded-circle"/>
+        </v-btn>
+        <v-icon v-bind="props" icon="mdi-chevron-down"></v-icon>
+      </template>
+      <v-list density="compact" rounded="lg" class="mt-2">
+        <v-list-item
+          v-for="(item, index) in items"
+          :key="index"
+          :value="index"
+          :append-icon="item.icon"
+        >
+          <v-list-item-title
+            @click="item.action"
+            class="font-weight-bold"
+            >{{ item.title }}
+          </v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
 </template>
 
 <script setup>

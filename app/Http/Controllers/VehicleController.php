@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use App\Models\Comment;
 use App\Models\Models;
 use App\Models\Vehicle;
 use App\Models\VehicleImg;
@@ -27,7 +28,7 @@ class VehicleController extends Controller
   public function search(Request $request)
   {
     $filters = $request->only([
-      'brand', 'model', 'minYear', 'maxYear', 'search', 'sort'
+      'brand', 'model', 'minYear', 'maxYear', 'search', 'sort', 'mileageRange'
     ]);
 
     $vehicles = Vehicle::query()->with('images', function ($query) {
@@ -48,8 +49,6 @@ class VehicleController extends Controller
    */
   public function store(Request $request)
   {
-    // dd($request->toArray());
-
     $request->validate([
       'model_id' => 'required',
       'price' => 'numeric|nullable',
@@ -91,8 +90,17 @@ class VehicleController extends Controller
   {
     $vehicle = Vehicle::with('images')->with('brand')->with('model')->find($id);
 
+    $comments = Comment::query()
+      ->whereNull('parent_id')
+      ->where('vehicle_id', $vehicle->id)
+      ->with('user')
+      ->with('replies')
+      ->orderBy('created_at', 'desc')
+      ->get();
+
     return Inertia::render('Vehicles/Show', [
-      'vehicle' => $vehicle
+      'vehicle' => $vehicle,
+      'comments' => $comments
     ]);
   }
 

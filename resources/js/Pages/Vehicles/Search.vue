@@ -42,15 +42,11 @@
           </v-row>
         </div>
 
-        <div v-else class="h-screen">
-          <v-row>
-            <v-col class="text-center">
-              No vehicles found!
-            </v-col>
-          </v-row>
+        <div v-else class="h-screen text-center">
+          No vehicles found!
         </div>
 
-        <v-row v-if="vehicles.data.length" class="mb-5">
+        <div v-if="vehicles.data.length" class="mb-5">
           <v-pagination
             v-model="form.page"
             :length="Math.ceil(vehicles.total / vehicles.per_page)"
@@ -59,7 +55,7 @@
             active-color="teal-lighten-3"
             show-first-last-page
           ></v-pagination>
-        </v-row>
+        </div>
       </v-container>
     </template>
 
@@ -86,6 +82,21 @@
           />
         </div>
 
+        <div class="mt-3">
+          <v-range-slider
+            v-model="form.mileageRange"
+            :min="0"
+            :max="500000"
+            strict
+            density="compact"
+            color="teal-darken-3"
+            elevation="10"
+            label="Mileage"
+            step="1000"
+            thumb-label="always"
+          ></v-range-slider>
+        </div>
+
         <v-sheet
           class="text-center mt-5 mb-3 rounded-lg pa-2"
           style="position: sticky; top: 20px; z-index: 1;"
@@ -104,7 +115,6 @@
           </v-btn>
         </v-sheet>
 
-
       </div>
     </template>
     
@@ -120,7 +130,6 @@ import SearchVehiclesLayout from '@/Layouts/SearchVehiclesLayout.vue';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { computed, watch, ref } from 'vue';
 import SearchPageSort from '@/Components/SelectOptions/SearchPageSort.vue';
-import { onMounted } from 'vue';
 
 const props = defineProps(['vehicles', 'filters', 'brands', 'models', 'years', 'sort'])
 
@@ -131,9 +140,10 @@ const form = useForm({
   model: Number(props.filters.model) || null,
   minYear: (props.filters.minYear) || null,
   maxYear: props.filters.maxYear || null,
-  page: props.vehicles.current_page,
+  mileageRange: props.filters.mileageRange || [0, 500000],
   search: props.filters.search || null,
   sort: props.filters.sort || null,
+  page: props.vehicles.current_page,
 })
 
 const submit = () => {
@@ -156,21 +166,13 @@ const reset = () => {
   router.get(route('vehicles.search'));
 }
 
-const page = computed(() => {
-  return form.page;
-})
+watch(computed(() => form.page), () => {
+  submit()
+});
 
-watch(page, () => {
-  submit();
-})
-
-const sort = computed(() => {
-  return form.sort;
-})
-
-watch(sort, () => {
-  submit();
-})
+watch(computed(() => form.sort), () => {
+  submit()
+});
 </script>
 
 <style scoped>

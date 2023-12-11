@@ -10,7 +10,11 @@
       </v-app-bar>
       
       <v-main>
-        <slot name="main"/>
+      <Transition name="fade" appear>
+        <div>
+          <slot name="main"/>
+        </div>
+      </Transition>
       </v-main>
   
       <v-navigation-drawer
@@ -35,3 +39,15 @@ import MainFooter from '@/Components/MainFooter.vue';
 import NavBar from '@/Components/NavBar.vue';
 
 </script>
+
+<style>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+</style>

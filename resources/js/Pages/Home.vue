@@ -113,7 +113,6 @@ const switchColor = computed(() => {
 
     <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur labore iste commodi aperiam repellendus libero provident illo soluta cum. Animi sed, quos tempora iusto ut libero suscipit ipsum ipsa consequatur!</div>
 
-    <MainFooter/>
   </MainLayout>
 
 </template>

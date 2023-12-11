@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "lodash.debounce": "^4.0.8",
+        "moment": "^2.29.4",
         "vue3-carousel": "^0.3.1",
         "vuetify": "^3.3.23"
     }

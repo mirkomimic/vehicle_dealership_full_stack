@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleController;
@@ -45,6 +46,9 @@ Route::middleware('auth')->group(function () {
 
   Route::resource('vehicles', VehicleController::class)->only('index', 'store', 'show', 'update', 'destroy');
   Route::get('vehicles_search', [VehicleController::class, 'search'])->name('vehicles.search');
+
+  Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
+  Route::post('/reply', [CommentController::class, 'reply'])->name('comment.reply');
 
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

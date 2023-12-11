@@ -90,6 +90,11 @@ class Vehicle extends Model
           return $query->orderBy('created_at', 'desc');
         }
       }
+    )->when(
+      $filters['mileageRange'] ?? false,
+      function ($query, $value) {
+        return $query->whereBetween('mileage', $value);
+      }
     );
   }
 }
