@@ -13,6 +13,10 @@
         </div>
         <v-spacer></v-spacer>
         <div class="d-flex align-center" style="gap: 10px;">
+          <Link v-if="$page.props.auth.user" href="/dashboard">
+            <v-btn variant="tonal" color="grey-lighten-1">Dashboard</v-btn>
+          </Link>
+
           <v-switch
             @click="toggleTheme"
             color="teal-lighten-3"
@@ -22,9 +26,12 @@
             true-icon="mdi-white-balance-sunny"
             false-icon="mdi-weather-night"
           ></v-switch>
+
+          <CartDialog/>
+
           <Link v-if="!$page.props.auth.user" :href="route('login')" >Login</Link>
           <Link v-if="!$page.props.auth.user" :href="route('register')" >Register</Link>
-          <Link v-if="$page.props.auth.user" href="/dashboard" >Dashboard</Link>
+
           <NavBarUserDropdown v-if="$page.props.auth.user"/>
         </div>
       </div>
@@ -36,6 +43,7 @@
 import { Link } from '@inertiajs/vue3';
 import { useTheme } from 'vuetify'
 import NavBarUserDropdown from './Dropdowns/NavBarUserDropdown.vue';
+import CartDialog from './Dialogs/CartDialog.vue';
 
 const theme = useTheme()
 

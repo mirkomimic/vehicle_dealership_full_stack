@@ -64,42 +64,40 @@ const switchColor = computed(() => {
 
   <MainLayout>
     <!-- Main Page Filter -->
-    <v-sheet class="pa-5 mt-16 mx-auto mm-border-green" :width="900" border="sm" rounded>
-
-      <div>
-        <SelectOptionsVuetify
-          :brands="brands"
-          :models="models"
-          v-model:selected-brand="form.brand"
-          v-model:selected-model="form.model"
-        />
-      </div>
-
-
-      <div>
-        <SelectMinMaxYear
-          :years="years"
-          v-model:selected-min-year="form.minYear"
-          v-model:selected-max-year="form.maxYear"
-        />
-      </div>
-
-      <div class="tw-flex tw-gap-3">
-        <v-btn variant="outlined" :color="switchColor">More options</v-btn>
-        <v-btn
-          @click="submit"
-          :loading="processing"
-          :disabled="processing"
-          color="teal-darken-3"
-          prepend-icon="mdi-magnify"
-          >Search
-        </v-btn>
-        <v-btn @click="resetFilter" variant="plain" class="px-0">
-          <span class="tw-underline">Clear search</span>
-        </v-btn>
-      </div>
+    <div class="mt-16 mx-auto mm-border-green rounded-sm" style="width: 900px;">
+      <v-sheet class="pa-5" rounded>
+        <div>
+          <SelectOptionsVuetify
+            :brands="brands"
+            :models="models"
+            v-model:selected-brand="form.brand"
+            v-model:selected-model="form.model"
+          />
+        </div>
+        <div>
+          <SelectMinMaxYear
+            :years="years"
+            v-model:selected-min-year="form.minYear"
+            v-model:selected-max-year="form.maxYear"
+          />
+        </div>
+        <div class="d-flex ga-3">
+          <v-btn variant="outlined" :color="switchColor">More options</v-btn>
+          <v-btn
+            @click="submit"
+            :loading="processing"
+            :disabled="processing"
+            color="teal-darken-3"
+            prepend-icon="mdi-magnify"
+            >Search
+          </v-btn>
+          <v-btn @click="resetFilter" variant="plain" class="px-0">
+            <span class="text-decoration-underline">Clear search</span>
+          </v-btn>
+        </div>
       
-    </v-sheet>
+      </v-sheet>
+    </div>
 
     <v-divider class="mt-16 mb-8 mx-10"></v-divider>
 
@@ -116,12 +114,3 @@ const switchColor = computed(() => {
   </MainLayout>
 
 </template>
-
-<style scoped>
-.mm-border-green {
-  border-color: #28896b !important;
-}
-html {
-  scroll-behavior: smooth;
-}
-</style>

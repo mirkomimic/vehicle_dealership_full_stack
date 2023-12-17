@@ -20,7 +20,7 @@
             ></v-text-field>
           </div>
           
-          <div style="width: 200px;" class="mx-auto mx-md-0">
+          <div style="min-width: 200px;" class="ms-auto mx-md-0">
             <SearchPageSort
               v-model:vehicles-sort="form.sort"
             />
@@ -37,7 +37,13 @@
               no-gutters
               class="pa-3"
             >
-              <VehicleCard :vehicle="vehicle"/>
+              <v-skeleton-loader
+                :loading="loading"
+                type="card"
+                color="transparent"
+              >
+                <VehicleCard :vehicle="vehicle"/>
+              </v-skeleton-loader>
             </v-col>
           </v-row>
         </div>
@@ -128,12 +134,13 @@ import SelectMinMaxYear from '@/Components/SelectOptions/SelectMinMaxYear.vue';
 import SelectOptionsVuetifyForAddVehicleForm from '@/Components/SelectOptions/SelectOptionsVuetifyForAddVehicleForm.vue';
 import SearchVehiclesLayout from '@/Layouts/SearchVehiclesLayout.vue';
 import { Head, router, useForm } from '@inertiajs/vue3';
-import { computed, watch, ref } from 'vue';
+import { computed, watch, ref, onMounted } from 'vue';
 import SearchPageSort from '@/Components/SelectOptions/SearchPageSort.vue';
 
 const props = defineProps(['vehicles', 'filters', 'brands', 'models', 'years', 'sort'])
 
 const processing = ref(false)
+const loading = ref(true)
 
 const form = useForm({
   brand: Number(props.filters.brand) || null,
@@ -151,14 +158,20 @@ const submit = () => {
 
   setTimeout(() => {
     processing.value = false
+
     form.get(route('vehicles.search'), {
       preserveScroll: true,
       preserveState: true,
       onSuccess: () => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
+        loading.value = false
       },
     });    
   }, 2000)
+
+  setTimeout(() => {
+    loading.value = true
+  }, 1500);
 }
 
 const reset = () => {
@@ -173,6 +186,12 @@ watch(computed(() => form.page), () => {
 watch(computed(() => form.sort), () => {
   submit()
 });
+
+onMounted(() => {
+  setTimeout(() => {
+    loading.value = false
+  }, 1000);
+})
 </script>
 
 <style scoped>

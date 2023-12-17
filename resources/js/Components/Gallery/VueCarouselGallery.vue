@@ -1,14 +1,15 @@
 <template>
-  <v-sheet class="pa-1">
+  <v-sheet class="pa-1" rounded="lg">
     <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide">
       <Slide v-for="slide in vehicle.images" :key="slide">
-        <div class="carousel__item">
+        <div class="carousel__item pa-3">
           <v-img
             style="cursor: pointer;"
             @click="openFullScreenGallery"
             :width="500"
             :height="400"
             :src="`../storage/images/vehicles/${vehicle.id}/${slide.img}`"
+            class="rounded-lg "
           />
         </div>
       </Slide>
@@ -41,6 +42,7 @@
             :height="100"
             cover
             :src="`../storage/images/vehicles/${vehicle.id}/${slide.img}`"
+            class="rounded-lg"
           />
         </div>
       </Slide>

@@ -1,6 +1,16 @@
+html {
+  scroll-behavior: smooth;
+}
+
 .mm-blur {
   backdrop-filter: blur(10px);
 }
+
+.mm-border-green {
+  border: 1px solid;
+  border-color: #28896b !important;
+}
+
 
 /* .vuetifySelect:deep() input {
   background-color: transparent !important;

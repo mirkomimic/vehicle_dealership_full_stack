@@ -2,7 +2,7 @@
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
 import { Head, router, useForm, usePage } from '@inertiajs/vue3';
 import { watch, computed, toRefs, ref, nextTick } from 'vue';
-import { VDataTable } from 'vuetify/labs/VDataTable'
+// import { VDataTable } from 'vuetify/labs/VDataTable'
 
 const props = defineProps(['brands'])
 const { brands } = toRefs(props)
@@ -165,31 +165,41 @@ const setImg = (e) => {
   <Head title="Dashboard | Brands" />
 
   <DashboardLayout>
-    <div class="tw-h-full tw-relative">
-      <!-- alert -->
-      <div class="tw-w-[300px] tw-absolute tw-top-0 tw-right-0 tw-z-20 tw-mt-3">
-        <v-fade-transition>
-          <v-alert
-            v-if="$page.props.flash.success"
-            id="successMsg"
-            closable
-            icon="mdi-check"
-            title="Message"
-            :text="$page.props.flash.success"
-            variant="flat"
-            theme="light"
-            color="rgba(33,250,182,0.7)"
-            width="300"
-          ></v-alert>
-        </v-fade-transition>
-      </div>
+
+    <!-- alert -->
+    <div style="width: 300px;">        
+      <v-snackbar
+        v-model="$page.props.flash.success"
+        location="top right"
+        position="fixed"
+        timeout="5000"
+        variant="elevated"
+        color="rgba(33,250,182,0.7)"
+        vertical
+      >
+        <div class="text-subtitle-1 pb-2 font-weight-bold">Message</div>
+
+        <p>{{ $page.props.flash.success }}</p>
+
+        <template v-slot:actions>
+          <v-btn
+            color="black"
+            variant="text"
+            @click="$page.props.flash.success = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+
     </div>
+
 
     <div class="text-h4 text-teal-darken-1 text-uppercase text-center mt-5">Brands</div>
 
     <!-- data table -->
-    <div class="tw-w-full tw-overflow-x-auto">
-      <div class="tw-w-[1000px]  tw-mx-auto tw-mt-10 tw-mb-3 tw-p-1 tw-border tw-border-[rgba(33,250,182,0.57)] tw-rounded-md">
+    <div>
+      <div class="mx-auto mt-10 mb-3 pa-1 mm-border-green rounded-sm" style="width: 1000px;">
       
         <v-data-table
           :headers="headers"

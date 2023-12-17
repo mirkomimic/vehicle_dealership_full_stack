@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Foundation\Application;
@@ -49,6 +51,12 @@ Route::middleware('auth')->group(function () {
 
   Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
   Route::post('/reply', [CommentController::class, 'reply'])->name('comment.reply');
+
+  Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+  Route::post('/cart_remove', [CartController::class, 'remove'])->name('cart.remove');
+  Route::post('/cart_clear', [CartController::class, 'clear'])->name('cart.clear');
+
+  Route::resource('orders', OrderController::class);
 
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -53,13 +53,34 @@
               </tr>
             </tbody>
           </v-table>
+
+          <v-btn 
+            @click="addToCart(vehicle)"
+            variant="tonal"
+            color="teal-lighten-3"
+            class="mt-5"
+            prepend-icon="mdi-plus"
+            >Add to Cart
+            <template v-slot:append>
+              ({{ qtyOfVehicleInCart }})
+            </template>
+          </v-btn>
+          <v-btn 
+            v-if="qtyOfVehicleInCart"
+            @click="removeFromCart(vehicle)"
+            variant="tonal"
+            color="red-lighten-3"
+            class="mt-5 ms-2"
+            prepend-icon="mdi-minus"
+            >Remove from Cart
+          </v-btn>
         </v-col>
       </v-row>
 
       <v-divider class="mt-10 mb-5"></v-divider>
 
       <div class="text-h4 text-teal-darken-3 mb-5">Comments</div>
-      <!-- bg-color="amber-lighten-4" -->
+
       <v-textarea
         v-model="newCommentForm.comment"
         :rules="rules.length"
@@ -77,13 +98,15 @@
 
       <v-divider class="my-5"></v-divider>
 
-      <div class="mt-3" style="height: 1000px; overflow: scroll;">
+      <div v-if="comments.length" class="mt-3" style="height: 1000px; overflow: scroll;">
         <Comments
           v-for="comment in comments"
           :key="comment"
           :comment="comment" 
         />
       </div>
+
+      <div v-else class="text-center font-weight-bold">No comments yet!</div>
 
     </v-container>
   </MainLayout>
@@ -94,10 +117,12 @@ import Comments from '@/Components/Comments/Comments.vue';
 import FullScreenVueCarouselGallery from '@/Components/Gallery/FullScreenVueCarouselGallery.vue';
 import VueCarouselGallery from '@/Components/Gallery/VueCarouselGallery.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { Head, router, useForm, usePage } from '@inertiajs/vue3';
+import { ref, computed } from 'vue';
 
 const props = defineProps(['vehicle', 'comments'])
+
+const cart = computed(() => usePage().props.cart)
 
 const galleryOverlay = ref(false)
 
@@ -116,4 +141,18 @@ const submitNewComment = () => {
   })
   newCommentForm.reset()
 }
+
+const addToCart = (vehicle) => {
+  router.post(route('cart.store'), {vehicle: vehicle})
+}
+const removeFromCart = (vehicle) => {
+  router.post(route('cart.remove'), {vehicle: vehicle})
+}
+
+const qtyOfVehicleInCart = computed(() => {
+  let item = cart.value.find((item) => {
+    return item.id = props.vehicle.id
+  })
+  return item ? item.quantity : 0
+})
 </script>

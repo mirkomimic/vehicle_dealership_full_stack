@@ -1,7 +1,6 @@
 <template>
   <div class="border-s-sm ps-2">
     <v-card
-
       min-height="100"
       rounded="lg"
       class="d-flex pa-2 me-3"
@@ -47,6 +46,11 @@
             {{ comment.comment }}
           </div>
           <div class="mt-auto d-flex align-end">
+
+            <div>
+              <ReplyDialog :comment="comment"/>
+            </div>
+
             <div>
               <v-btn
                 v-if="comment.replies.length"
@@ -55,16 +59,13 @@
                 variant="text"
                 prepend-icon="mdi-chevron-down"
                 density="compact"
+                style="width: 170px;"
               >
                 {{ collapse ? 'Collapse' : 'Show' }}
-                <template v-slot:append>
+                <!-- <template v-slot:append>
                   ({{ comment.replies.length ? comment.replies.length : '' }})
-                </template>
+                </template> -->
               </v-btn>
-            </div>
-
-            <div>
-              <ReplyDialog :comment="comment"/>
             </div>
 
             <div class="ms-auto">
@@ -87,7 +88,7 @@
                     :class="item.color"
                   >
                     <template v-slot:prepend>
-                      <v-icon :icon="item.icon" class="me-n4"></v-icon>
+                      <v-icon :icon="item.icon" class="me-n4"/>
                     </template>
                     <v-list-item-title >
                       {{ item.title }}
@@ -101,13 +102,16 @@
       </v-row>
     </v-card>
 
-    <div class="ms-2 mt-3">
-      <Comments
-        v-if="collapse"
-        v-for="reply in comment.replies"
-        :key="reply"
-        :comment="reply" 
-      />
+    <div class="ms-2 mt-3" style="overflow: hidden;">
+      <Transition name="list">
+        <div v-if="collapse">
+          <Comments
+            v-for="reply in comment.replies"
+            :key="reply"
+            :comment="reply"
+          />
+        </div>
+      </Transition>
     </div>
   </div>
 </template>
@@ -138,3 +142,15 @@ const edit = (id) => {
   console.log(id);
 }
 </script>
+
+<style>
+.list-enter-active,
+.list-leave-active {
+  transition: all .5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+</style>
