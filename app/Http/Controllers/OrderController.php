@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -28,7 +30,17 @@ class OrderController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $cart = session()->get('cart', []);
+
+    $order = new Order();
+    $order->user_id = Auth::id();
+    $order->total = $request->grandTotal;
+    $order->items = json_encode($cart);
+    $order->save();
+
+    session()->put('cart', []);
+
+    return Inertia::render('Orders/Complete');
   }
 
   /**

@@ -151,7 +151,7 @@ const removeFromCart = (vehicle) => {
 
 const qtyOfVehicleInCart = computed(() => {
   let item = cart.value.find((item) => {
-    return item.id = props.vehicle.id
+    return item.vehicle.id == props.vehicle.id
   })
   return item ? item.quantity : 0
 })
