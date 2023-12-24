@@ -22,7 +22,9 @@ class OrderController extends Controller
    */
   public function create()
   {
-    return Inertia::render('Orders/Create');
+    $cart = session()->get('cart', []);
+    if (!empty($cart))
+      return Inertia::render('Orders/Create');
   }
 
   /**
@@ -31,6 +33,8 @@ class OrderController extends Controller
   public function store(Request $request)
   {
     $cart = session()->get('cart', []);
+
+    if (empty($cart)) return false;
 
     $order = new Order();
     $order->user_id = Auth::id();

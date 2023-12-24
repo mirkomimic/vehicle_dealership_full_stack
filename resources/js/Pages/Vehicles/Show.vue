@@ -55,6 +55,7 @@
           </v-table>
 
           <v-btn 
+            v-if="$page.props.auth.user && $page.props.auth.user.id != vehicle.user_id"
             @click="addToCart(vehicle)"
             variant="tonal"
             color="teal-lighten-3"

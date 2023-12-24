@@ -38,6 +38,9 @@ use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
+Route::get('vehicles_search', [VehicleController::class, 'search'])->name('vehicles.search');
+Route::resource('vehicles', VehicleController::class)->only('show');
+
 
 Route::middleware('auth')->group(function () {
   Route::get('/dashboard', [AdminController::class, 'index'])->name('dashboard.index');
@@ -46,8 +49,7 @@ Route::middleware('auth')->group(function () {
   Route::delete('/dashboard/brands/{id}', [AdminController::class, 'deleteBrand'])->name('dashboard.brands.delete');
   Route::post('/dashboard/brands/{id}', [AdminController::class, 'updateBrand'])->name('dashboard.brands.update');
 
-  Route::resource('vehicles', VehicleController::class)->only('index', 'store', 'show', 'update', 'destroy');
-  Route::get('vehicles_search', [VehicleController::class, 'search'])->name('vehicles.search');
+  Route::resource('vehicles', VehicleController::class)->only('index', 'store', 'update', 'destroy');
 
   Route::post('/comment', [CommentController::class, 'store'])->name('comment.store');
   Route::post('/reply', [CommentController::class, 'reply'])->name('comment.reply');

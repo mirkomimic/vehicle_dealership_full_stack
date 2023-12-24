@@ -24,6 +24,7 @@
           :key="index"
           :value="index"
           :append-icon="item.icon"
+          :subtitle="item.subtitle"
         >
           <v-list-item-title
             @click="item.action"
@@ -37,14 +38,22 @@
 </template>
 
 <script setup>
-import { router } from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
+
+const user = usePage().props.auth.user
 
 const items = [
   {
     icon: 'mdi-account',
-    title: 'Profile',
+    title: user.name,
+    subtitle: user.email,
     action: () => router.get(route('profile.edit'))
   },
+  // {
+  //   icon: 'mdi-account',
+  //   title: 'Profile',
+  //   action: () => router.get(route('profile.edit'))
+  // },
   {
     icon: 'mdi-car-back',
     title: 'My Vehicles',

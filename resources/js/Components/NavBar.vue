@@ -13,7 +13,7 @@
         </div>
         <v-spacer></v-spacer>
         <div class="d-flex align-center" style="gap: 10px;">
-          <Link v-if="$page.props.auth.user" href="/dashboard">
+          <Link v-if="$page.props.auth.user?.is_admin" href="/dashboard">
             <v-btn variant="tonal" color="grey-lighten-1">Dashboard</v-btn>
           </Link>
 
@@ -27,10 +27,14 @@
             false-icon="mdi-weather-night"
           ></v-switch>
 
-          <CartDialog/>
+          <CartDialog v-if="$page.props.auth.user"/>
 
-          <Link v-if="!$page.props.auth.user" :href="route('login')" >Login</Link>
-          <Link v-if="!$page.props.auth.user" :href="route('register')" >Register</Link>
+          <Link v-if="!$page.props.auth.user" :href="route('login')">
+            <v-btn variant="outlined" color="teal-lighten-3">Login</v-btn>
+          </Link>
+          <Link v-if="!$page.props.auth.user" :href="route('register')">
+            <v-btn variant="tonal">Register</v-btn>
+          </Link>
 
           <NavBarUserDropdown v-if="$page.props.auth.user"/>
         </div>

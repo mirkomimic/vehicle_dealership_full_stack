@@ -4,7 +4,8 @@
       min-height="100"
       rounded="lg"
       class="d-flex pa-2 me-3"
-      border="sm"
+      border
+      :class="{'mm-border-green': user.id == comment.user_id}"
     >
       <v-row>
         <v-col 
@@ -23,15 +24,7 @@
           </div>
 
           <div class="ms-auto ms-md-0 mt-md-auto">
-            <v-btn
-              v-if="comment.user_id == $page.props.auth.user.id"
-              variant="text"
-              color="red-lighten-3"
-              density="compact"
-              class="pa-0 text-decoration-underline"
-            >
-              Delete
-            </v-btn>
+            <!-- likes -->
           </div>
         </v-col>
 
@@ -80,20 +73,24 @@
                   </v-btn>
                 </template>
                 <v-list density="compact" rounded="lg">
-                  <v-list-item
+                  <div
                     v-for="(item, index) in menuItems"
                     :key="index"
-                    :value="index"
-                    @click="edit(comment.id)"
-                    :class="item.color"
                   >
-                    <template v-slot:prepend>
-                      <v-icon :icon="item.icon" class="me-n4"/>
-                    </template>
-                    <v-list-item-title >
-                      {{ item.title }}
-                    </v-list-item-title>
-                  </v-list-item>
+                    <v-list-item
+                      v-if="item.isAuthorized(comment.user_id)"
+                      :value="index"
+                      @click="edit(comment.id)"
+                      :class="item.color"
+                    >
+                      <template v-slot:prepend>
+                        <v-icon :icon="item.icon" class="me-n5"/>
+                      </template>
+                      <v-list-item-title>
+                        {{ item.title }}
+                      </v-list-item-title>
+                    </v-list-item>
+                  </div>
                 </v-list>
               </v-menu>
             </div>
@@ -120,8 +117,10 @@
 import { ref } from 'vue';
 import ReplyDialog from '../Dialogs/ReplyDialog.vue';
 import moment from "moment";
+import { usePage } from '@inertiajs/vue3';
 
 const props = defineProps(['comment'])
+const user = usePage().props.auth.user
 
 const collapse = ref(true)
 
@@ -130,12 +129,20 @@ const menuItems = [
     icon: 'mdi-pencil-box-outline',
     title: 'Edit',
     color: 'text-teal-accent-1',
+    isAuthorized: (user_id) => user_id == user.id || user.is_admin
   },
   {
     icon: 'mdi-exclamation-thick',
     title: 'Report',
     color: 'text-yellow-darken-2',
-  }
+    isAuthorized: (user_id) => user != null
+  },
+  {
+    icon: 'mdi-trash-can-outline',
+    title: 'Delete',
+    color: 'text-red-darken-2',
+    isAuthorized: (user_id) => user_id == user.id || user.is_admin
+  },
 ]
 
 const edit = (id) => {

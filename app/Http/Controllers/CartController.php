@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class CartController extends Controller
@@ -13,6 +14,10 @@ class CartController extends Controller
    */
   public function store(Request $request)
   {
+    if ($request->vehicle['user_id'] == Auth::id()) {
+      return false;
+    }
+
     $cart = session()->get('cart', []);
 
     $this->checkIfInCart($cart, $request->vehicle['id']);
