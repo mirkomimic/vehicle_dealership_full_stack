@@ -28,12 +28,16 @@ class VehicleController extends Controller
   public function search(Request $request)
   {
     $filters = $request->only([
-      'brand', 'model', 'minYear', 'maxYear', 'search', 'sort', 'mileageRange'
+      'brand', 'model', 'minYear', 'maxYear', 'search', 'sort', 'mileageRange', 'type'
     ]);
 
     $vehicles = Vehicle::query()->with('images', function ($query) {
       return $query->where('isThumbnail', '=', true);
-    })->with('model')->with('brand')->filter($filters)->paginate(9);
+    })->with('model')
+      ->with('brand')
+      ->with('type')
+      ->filter($filters)
+      ->paginate(9);
 
     return Inertia::render('Vehicles/Search', [
       'vehicles' => $vehicles,

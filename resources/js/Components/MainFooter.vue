@@ -1,8 +1,17 @@
 <template>
   <v-container fluid class="pa-0">
     <v-row>
-      <v-col cols="12" style="height: 200px;">
-        footer
+      <v-col cols="12" md="3" v-for="(item, index) in 4" :key="index">
+        <v-list class="text-center">
+          <v-list-item>
+            <v-list-item-title class="text-h6 text-uppercase">
+              Title
+            </v-list-item-title>
+            <v-list-item-subtitle v-for="(item, index) in 5" :key="index">
+              <Link href="/" class="text-body-1 text-uppercase text-teal-accent-1">Link 1</Link>
+            </v-list-item-subtitle>
+          </v-list-item>
+        </v-list>
       </v-col>
     </v-row>
     <v-row>
@@ -38,6 +47,8 @@
 </template>
 
 <script setup>
+import { Link } from '@inertiajs/vue3';
+
 const icons = [
   'mdi-facebook',
   'mdi-twitter',

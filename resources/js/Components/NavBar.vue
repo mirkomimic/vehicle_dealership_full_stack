@@ -1,13 +1,13 @@
 <template>
-
   <v-toolbar
     color="transparent"
     density="compact"
   >
+    <v-app-bar-nav-icon class="d-block d-lg-none" @click="$page.props.leftDrawer = !$page.props.leftDrawer"></v-app-bar-nav-icon>
     <v-container>
       <div class="d-flex align-center">
         <div>
-          <Link href="/">
+          <Link href="/" class="d-none d-lg-block">
             <img width="70" class="" src="/icons/blue-car-logo.png" alt="">
           </Link>
         </div>

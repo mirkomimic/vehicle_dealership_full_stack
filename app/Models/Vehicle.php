@@ -52,6 +52,13 @@ class Vehicle extends Model
         });
       }
     )->when(
+      $filters['type'] ?? false,
+      function ($query, $value) {
+        return $query->whereHas('model', function ($q) use ($value) {
+          return $q->where('vehicle_type_id', $value);
+        });
+      }
+    )->when(
       $filters['model'] ?? false,
       function ($query, $value) {
         return $query->whereHas('model', function ($q) use ($value) {

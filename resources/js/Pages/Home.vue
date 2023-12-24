@@ -9,6 +9,7 @@ import { useTheme } from 'vuetify'
 import { Head, useForm } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 import VueCarousel from '@/Components/Gallery/VueCarousel.vue';
+import BtnToggleVehicleType from '@/Components/BtnToggle/BtnToggleVehicleType.vue';
 
 const props = defineProps({
   canLogin: {
@@ -32,12 +33,15 @@ const props = defineProps({
 });
 
 const processing = ref(false)
+const moreOptions = ref(false)
 
 const form = useForm({
   brand: null,
   model: null,
   minYear: null,
   maxYear: null,
+  type: null,
+  mileageRange: [0, 500000]
 })
 
 const submit = () => {
@@ -66,6 +70,9 @@ const switchColor = computed(() => {
     <!-- Main Page Filter -->
     <div class="mt-16 mx-auto mm-border-green rounded-sm" style="width: 900px;">
       <v-sheet class="pa-5" rounded>
+        <div class="mb-4">
+          <BtnToggleVehicleType v-model:type="form.type"/>
+        </div>
         <div>
           <SelectOptionsVuetify
             :brands="brands"
@@ -81,8 +88,35 @@ const switchColor = computed(() => {
             v-model:selected-max-year="form.maxYear"
           />
         </div>
+
+        <div>
+          <v-expand-transition>
+            <div v-if="moreOptions">
+              <div class="mt-3">
+                <v-range-slider
+                  v-model="form.mileageRange"
+                  :min="0"
+                  :max="500000"
+                  strict
+                  density="compact"
+                  color="teal-darken-3"
+                  elevation="10"
+                  label="Mileage"
+                  step="1000"
+                  thumb-label="true"
+                ></v-range-slider>
+              </div>
+            </div>
+          </v-expand-transition>
+        </div>
+
         <div class="d-flex ga-3">
-          <v-btn variant="outlined" :color="switchColor">More options</v-btn>
+          <v-btn
+            @click="moreOptions = !moreOptions"
+            variant="outlined"
+            :color="switchColor"
+            >{{ moreOptions ? 'Less Options' : 'More Options' }}
+          </v-btn>
           <v-btn
             @click="submit"
             :loading="processing"
@@ -94,8 +128,7 @@ const switchColor = computed(() => {
           <v-btn @click="resetFilter" variant="plain" class="px-0">
             <span class="text-decoration-underline">Clear search</span>
           </v-btn>
-        </div>
-      
+        </div>      
       </v-sheet>
     </div>
 
@@ -109,8 +142,54 @@ const switchColor = computed(() => {
 
     <v-divider class="mt-16 mb-8 mx-10"></v-divider>
 
-    <div>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur labore iste commodi aperiam repellendus libero provident illo soluta cum. Animi sed, quos tempora iusto ut libero suscipit ipsum ipsa consequatur!</div>
+    <v-sheet color="transparent" class="mb-3 w-75 mx-auto">
+      <v-row>
+        <v-col
+          v-for="(item, index) in 3" :key="index"
+          cols="12"
+          md="4"
+        >
+          <v-lazy
+            :options="{
+              'threshold':1.0,
+            }"
+            transition="fade"
+          >
+            <div>
+              <v-hover>
+                <template v-slot="{ isHovering, props }">
+                  <v-card
+                    v-bind="props"
+                    style="transition: all .2s ease-in-out;"
+                    class="mx-auto"
+                    title="Card title"
+                    variant="tonal"
+                    :color="isHovering ? 'teal-lighten-1' : 'teal-lighten-3'"
+                    hover
+                    link
+                  >
+                    <v-card-text>
+                      Phasellus magna. Quisque rutrum. Nunc egestas, augue at pellentesque laoreet.
+                    </v-card-text>
+                  </v-card>                
+                </template>
+              </v-hover>
+            </div>
+          </v-lazy>
+        </v-col>
+      </v-row>
+    </v-sheet>
 
+    <v-divider class="my-10 mx-10"></v-divider>
   </MainLayout>
 
 </template>
+
+<style scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 2.5s
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  opacity: 0
+}
+</style>

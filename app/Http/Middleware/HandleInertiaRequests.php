@@ -36,6 +36,7 @@ class HandleInertiaRequests extends Middleware
         'user' => $request->user(),
       ],
       'cart' => session('cart', []),
+      'leftDrawer' => true,
       'flash' => [
         'success' => fn () => $request->session()->get('success')
       ],

@@ -1,36 +1,35 @@
 <template>
   <v-app>
-      <v-app-bar
-        elevation="2"
-        scroll-behavior="hide"
-        scroll-threshold="50"
-        density="comfortable"
-      >
-        <NavBar></NavBar>
-      </v-app-bar>
-      
-      <v-main>
+    <v-app-bar
+      elevation="2"
+      scroll-behavior="hide"
+      scroll-threshold="50"
+      density="comfortable"
+    >
+      <NavBar></NavBar>
+    </v-app-bar>
+    
+    <v-main>
       <Transition name="fade" appear>
         <div>
           <slot name="main"/>
         </div>
       </Transition>
-      </v-main>
-  
-      <v-navigation-drawer
-        absolute
-        class="d-none d-md-block"
-        color="transparent"
-        width="300"
-        style="z-index: 1;"
-      >
-        <slot name="nav-drawer"/>
-      </v-navigation-drawer>
+    </v-main>
 
-      <v-footer style="z-index: 20;">
-        <MainFooter/>
-      </v-footer>
+    <v-navigation-drawer
+      v-model="$page.props.leftDrawer"
+      mobile-breakpoint="lg"
+      width="300"
+      :scrim="false"
+      style="z-index: 1; "
+    >
+      <slot name="nav-drawer"/>
+    </v-navigation-drawer>
 
+    <v-footer style="z-index: 1;">
+      <MainFooter/>
+    </v-footer>
   </v-app>
 </template>
 

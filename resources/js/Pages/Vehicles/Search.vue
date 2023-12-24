@@ -72,6 +72,10 @@
         <div style="height: 90px;"></div>
 
         <div>
+          <VehicleTypeDropdown v-model:type="form.type"/>
+        </div>
+
+        <div>
           <SelectOptionsVuetifyForAddVehicleForm
             :brands="brands"
             :models="models"
@@ -136,6 +140,7 @@ import SearchVehiclesLayout from '@/Layouts/SearchVehiclesLayout.vue';
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { computed, watch, ref, onMounted } from 'vue';
 import SearchPageSort from '@/Components/SelectOptions/SearchPageSort.vue';
+import VehicleTypeDropdown from '@/Components/Dropdowns/VehicleTypeDropdown.vue';
 
 const props = defineProps(['vehicles', 'filters', 'brands', 'models', 'years', 'sort'])
 
@@ -150,6 +155,7 @@ const form = useForm({
   mileageRange: props.filters.mileageRange || [0, 500000],
   search: props.filters.search || null,
   sort: props.filters.sort || null,
+  type: Number(props.filters.type) || null,
   page: props.vehicles.current_page,
 })
 
