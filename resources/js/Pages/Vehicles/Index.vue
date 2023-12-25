@@ -174,7 +174,6 @@
     </v-sheet>
 
   </MainLayout>
-  <MainFooter/>
 </template>
 
 <script setup>

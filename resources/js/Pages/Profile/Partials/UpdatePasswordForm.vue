@@ -1,10 +1,6 @@
 <script setup>
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -31,75 +27,88 @@ const updatePassword = () => {
         },
     });
 };
+
+const passwordRules = [
+  value => {
+    if (value) return true
+
+    return 'The password field is required.'
+  },
+  // value => {
+  //   if (value?.length <= 10) return true
+
+  //   return 'Name must be less than 10 characters.'
+  // },
+];
+
+const passwordConfirmationRule = computed(() => {
+  return form.password_confirmation == form.password || "Password must match"
+})
 </script>
 
 <template>
-    <section>
-        <header>
-            <h2 class="text-lg font-medium text-gray-900">Update Password</h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                Ensure your account is using a long, random password to stay secure.
-            </p>
-        </header>
-
-        <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
-            <div>
-                <InputLabel for="current_password" value="Current Password" />
-
-                <TextInput
-                    id="current_password"
-                    ref="currentPasswordInput"
-                    v-model="form.current_password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="current-password"
-                />
-
-                <InputError :message="form.errors.current_password" class="mt-2" />
-            </div>
-
-            <div>
-                <InputLabel for="password" value="New Password" />
-
-                <TextInput
-                    id="password"
-                    ref="passwordInput"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="new-password"
-                />
-
-                <InputError :message="form.errors.password" class="mt-2" />
-            </div>
-
-            <div>
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-
-                <TextInput
-                    id="password_confirmation"
-                    v-model="form.password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="new-password"
-                />
-
-                <InputError :message="form.errors.password_confirmation" class="mt-2" />
-            </div>
-
-            <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
-
-                <Transition
-                    enter-active-class="transition ease-in-out"
-                    enter-from-class="opacity-0"
-                    leave-active-class="transition ease-in-out"
-                    leave-to-class="opacity-0"
-                >
-                    <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>
-                </Transition>
-            </div>
-        </form>
-    </section>
+  <v-card
+    title="Update Password"
+    subtitle="Ensure your account is using a long, random password to stay secure."
+    class="w-75 mx-auto"
+  >
+    <v-form @submit.prevent="updatePassword" class="vuetifySelect">
+      <v-card-text class="w-50 py-0"> 
+        <div class="mb-2">
+          <v-text-field
+            v-model="form.current_password"
+            :error-messages="form.errors.current_password"
+            type="password"
+            label="Current Password"
+            variant="solo-filled"
+            base-color="teal-lighten-3" color="teal-lighten-3"
+          />
+        </div>
+        <div class="mb-2">
+          <v-text-field
+            v-model="form.password"
+            :rules="passwordRules"
+            :error-messages="form.errors.password"
+            type="password"
+            label="Password"
+            variant="solo-filled"
+            base-color="teal-lighten-3" color="teal-lighten-3"
+          />
+        </div>
+        <div class="mb-2">
+          <v-text-field
+            v-model="form.password_confirmation"
+            :rules="[passwordConfirmationRule]"
+            :error-messages="form.errors.password_confirmation"
+            type="password"
+            label="Confirm Password"
+            variant="solo-filled"
+            base-color="teal-lighten-3" color="teal-lighten-3"
+          />
+        </div>
+      </v-card-text>
+      <v-card-actions class="ps-4">
+        <div class="d-flex">
+          <v-btn type="submit" :disabled="form.processing" variant="tonal" color="teal-lighten-3">
+            Save
+          </v-btn>
+          <Transition
+            enter-active-class="transition ease-in-out"
+            enter-from-class="opacity-0"
+            leave-active-class="transition ease-in-out"
+            leave-to-class="opacity-0"
+          >
+            <p v-if="form.recentlySuccessful" class="text-teal-lighten-3 pt-1 ps-1">Saved.</p>
+          </Transition>
+        </div>
+      </v-card-actions>
+    </v-form>
+  </v-card>
 </template>
+
+<style scoped>
+.vuetifySelect:deep() input {
+  background-color: transparent !important;
+  box-shadow: none;
+}
+</style>

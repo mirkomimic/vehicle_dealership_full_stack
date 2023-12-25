@@ -24,13 +24,15 @@
           :key="index"
           :value="index"
           :append-icon="item.icon"
-          :subtitle="item.subtitle"
         >
           <v-list-item-title
             @click="item.action"
             class="font-weight-bold"
             >{{ item.title }}
           </v-list-item-title>
+          <v-list-item-subtitle class="text-teal-lighten-3">
+            {{ item.subtitle }}
+          </v-list-item-subtitle>
         </v-list-item>
       </v-list>
     </v-menu>
