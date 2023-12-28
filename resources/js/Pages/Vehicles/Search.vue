@@ -4,9 +4,19 @@
   <SearchVehiclesLayout>
 
     <template v-slot:main>
-      <v-container fluid>
-        <v-sheet color="transparent" max-width="1000" class="vuetifySelect d-sm-flex mx-auto">
-          <div style="width: 300px;" class="mx-auto">
+      <v-container>
+        <div class="vuetifySelect mx-auto d-flex flex-column align-center flex-sm-row justify-sm-space-around ">
+
+          <div>
+            <v-btn
+              @click="$page.props.leftDrawer = true"
+              prepend-icon="mdi-menu"
+              class="mb-3 mb-sm-0 d-lg-none"
+              >Filters
+            </v-btn>
+          </div>
+
+          <div style="width: 300px;">
             <v-text-field
               v-model="form.search"
               @keyup.enter="submit"
@@ -17,17 +27,22 @@
               density="compact"
               variant="outlined"
               color="teal-lighten-3"
+              hide-details
             ></v-text-field>
           </div>
-          
-          <div style="min-width: 200px;" class="ms-auto mx-md-0">
+
+          <div style="min-width: 200px;">
             <SearchPageSort
               v-model:vehicles-sort="form.sort"
             />
           </div>
-        </v-sheet>
+        </div>
 
-        <div v-if="vehicles.data.length" class="h-screen">
+      </v-container>
+
+      <v-container fluid>
+
+        <div v-if="vehicles.data.length" class="min-h-screen">
           <v-row no-gutters style="max-width: 1000px;" class="mx-auto">
             <v-col
               v-for="(vehicle, index) in vehicles.data" :key="index"
@@ -69,7 +84,14 @@
 
       <div class="px-3" style="height: 1500px;">
 
-        <div style="height: 90px;"></div>
+        <div class="d-flex mt-2 mb-10">
+          <v-btn
+            @click="$page.props.leftDrawer = false"
+            icon="mdi-close"
+            class="ms-auto d-lg-none"
+            flat
+          />
+        </div>
 
         <div>
           <VehicleTypeDropdown v-model:type="form.type"/>
@@ -137,15 +159,18 @@ import VehicleCard from '@/Components/Cards/VehicleCard.vue';
 import SelectMinMaxYear from '@/Components/SelectOptions/SelectMinMaxYear.vue';
 import SelectOptionsVuetifyForAddVehicleForm from '@/Components/SelectOptions/SelectOptionsVuetifyForAddVehicleForm.vue';
 import SearchVehiclesLayout from '@/Layouts/SearchVehiclesLayout.vue';
-import { Head, router, useForm } from '@inertiajs/vue3';
+import { Head, router, useForm, usePage } from '@inertiajs/vue3';
 import { computed, watch, ref, onMounted } from 'vue';
 import SearchPageSort from '@/Components/SelectOptions/SearchPageSort.vue';
 import VehicleTypeDropdown from '@/Components/Dropdowns/VehicleTypeDropdown.vue';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
 
 const props = defineProps(['vehicles', 'filters', 'brands', 'models', 'years', 'sort'])
 
 const processing = ref(false)
 const loading = ref(true)
+
+const display = ref(useDisplay())
 
 const form = useForm({
   brand: Number(props.filters.brand) || null,
@@ -171,6 +196,9 @@ const submit = () => {
       onSuccess: () => {
         window.scrollTo({ top: 0, behavior: 'smooth' })
         loading.value = false
+        if (display.value.mdAndDown) {
+          usePage().props.leftDrawer = false
+        }
       },
     });    
   }, 2000)
@@ -182,6 +210,9 @@ const submit = () => {
 
 const reset = () => {
   form.reset();
+  if (display.value.mdAndDown) {
+    usePage().props.leftDrawer = false
+  }
   router.get(route('vehicles.search'));
 }
 

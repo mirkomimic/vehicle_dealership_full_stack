@@ -11,13 +11,12 @@ use Inertia\Inertia;
 
 class HomeController extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
     $latestVehicles = Vehicle::with(['images' => function ($query) {
       return $query->where('isThumbnail', '=', true);
     }])->with('model')->with('brand')->latest()->limit(5)->get();
 
-    // dd($latestVehicles->toArray());
     return Inertia::render('Home', [
       'brands' => Brand::all(),
       'models' => Models::with('vehicles')->get(),

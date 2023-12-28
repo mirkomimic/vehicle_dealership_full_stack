@@ -1,13 +1,12 @@
 <script setup>
-import MainFooter from '@/Components/MainFooter.vue';
 import SelectMinMaxYear from '@/Components/SelectOptions/SelectMinMaxYear.vue';
 import SelectOptionsVuetify from '@/Components/SelectOptions/SelectOptionsVuetify.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 
 import { useTheme } from 'vuetify'
 
-import { Head, useForm } from '@inertiajs/vue3';
-import { ref, computed } from 'vue';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { ref, computed, onMounted, watch } from 'vue';
 import VueCarousel from '@/Components/Gallery/VueCarousel.vue';
 import BtnToggleVehicleType from '@/Components/BtnToggle/BtnToggleVehicleType.vue';
 
@@ -29,11 +28,16 @@ const props = defineProps({
   },
   latestVehicles: {
     type: Object,
+  },
+  vehiclesCount: {
+    type: Object,
   }
 });
 
 const processing = ref(false)
 const moreOptions = ref(false)
+const numOfVehicles = ref(null)
+const token = ref(null)
 
 const form = useForm({
   brand: null,
@@ -61,12 +65,65 @@ const theme = useTheme()
 const switchColor = computed(() => {
   return theme.global.current.value.dark  ? 'teal-lighten-3' : 'teal-darken-3';
 })
+
+const getToken = () => {
+  fetch('/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({id: usePage().props.auth.user.id})
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json()
+  }).then(data => {
+    token.value = data.token
+  }).catch(error => {
+    console.log(error);
+  })
+}
+
+const numOfVehiclesApi = () => {
+  processing.value = true
+
+  fetch('/api/search', {
+    method: 'POST',
+    headers: {
+      // 'Authorization': `Bearer ${token.value}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(form)
+  }).then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    processing.value = false
+    return response.json();
+  }).then(data => {
+    numOfVehicles.value = data.vehicles
+  }).catch(error => {
+    console.log(error);
+  })
+}
+
+onMounted(() => {
+  getToken()
+})
+
+
+watch(form, () => {
+  numOfVehiclesApi()
+})
+
 </script>
 
 <template>
   <Head title="Welcome" />
 
   <MainLayout>
+
     <!-- Main Page Filter -->
     <div class="mt-16 mx-auto mm-border-green rounded-sm" style="width: 900px;">
       <v-sheet class="pa-5" rounded>
@@ -123,7 +180,11 @@ const switchColor = computed(() => {
             :disabled="processing"
             color="teal-darken-3"
             prepend-icon="mdi-magnify"
-            >Search
+            text="Search"
+          >
+            <template v-slot:append>
+              ({{ numOfVehicles }})
+            </template>
           </v-btn>
           <v-btn @click="resetFilter" variant="plain" class="px-0">
             <span class="text-decoration-underline">Clear search</span>

@@ -20,14 +20,13 @@
     <v-navigation-drawer
       v-model="$page.props.leftDrawer"
       mobile-breakpoint="lg"
-      width="300"
-      :scrim="false"
-      style="z-index: 1; "
+      absolute
+      :style="{width: width}"
     >
       <slot name="nav-drawer"/>
     </v-navigation-drawer>
 
-    <v-footer style="z-index: 1;">
+    <v-footer style="z-index: 1007;">
       <MainFooter/>
     </v-footer>
   </v-app>
@@ -36,6 +35,14 @@
 <script setup>
 import MainFooter from '@/Components/MainFooter.vue';
 import NavBar from '@/Components/NavBar.vue';
+import { computed, ref } from 'vue';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
+
+const display = ref(useDisplay()) 
+
+const width = computed(() => {
+  return display.value.smAndDown ? '100%' : '300px'
+})
 
 </script>
 
@@ -48,5 +55,9 @@ import NavBar from '@/Components/NavBar.vue';
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.mm-w-full {
+  width: 300px;
 }
 </style>

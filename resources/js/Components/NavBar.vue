@@ -3,11 +3,10 @@
     color="transparent"
     density="compact"
   >
-    <v-app-bar-nav-icon v-if="$page.url == '/search'" class="d-block d-lg-none" @click="$page.props.leftDrawer = !$page.props.leftDrawer"></v-app-bar-nav-icon>
     <v-container>
       <div class="d-flex align-center">
         <div>
-          <Link href="/" class="d-none d-lg-block">
+          <Link href="/">
             <img width="70" class="" src="/icons/blue-car-logo.png" alt="">
           </Link>
         </div>

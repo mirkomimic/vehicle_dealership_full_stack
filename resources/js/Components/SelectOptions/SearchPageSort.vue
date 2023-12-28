@@ -10,6 +10,7 @@
         variant="underlined"
         color="teal-lighten-3"
         prepend-inner-icon="mdi-sort"
+        hide-details
       ></v-select>
     </div>
   </div>
