@@ -4,6 +4,21 @@
   <SearchVehiclesLayout>
 
     <template v-slot:main>
+
+      <v-container fluid class="pa-0 ma-0 ps-lg-10">
+        <v-breadcrumbs
+          :items="breadcrumbs"
+          divider="/"
+          icon="mdi-home"
+        >
+          <template v-slot:item="{item}">
+            <v-breadcrumbs-item :disabled="item.disabled">
+              <Link :href="route(item.href)">{{ item.title }}</Link>
+            </v-breadcrumbs-item>
+          </template>
+        </v-breadcrumbs>
+      </v-container>
+
       <v-container>
         <div class="vuetifySelect mx-auto d-flex flex-column align-center flex-sm-row justify-sm-space-around ">
 
@@ -159,13 +174,13 @@ import VehicleCard from '@/Components/Cards/VehicleCard.vue';
 import SelectMinMaxYear from '@/Components/SelectOptions/SelectMinMaxYear.vue';
 import SelectOptionsVuetifyForAddVehicleForm from '@/Components/SelectOptions/SelectOptionsVuetifyForAddVehicleForm.vue';
 import SearchVehiclesLayout from '@/Layouts/SearchVehiclesLayout.vue';
-import { Head, router, useForm, usePage } from '@inertiajs/vue3';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { computed, watch, ref, onMounted } from 'vue';
 import SearchPageSort from '@/Components/SelectOptions/SearchPageSort.vue';
 import VehicleTypeDropdown from '@/Components/Dropdowns/VehicleTypeDropdown.vue';
 import { useDisplay } from 'vuetify/lib/framework.mjs';
 
-const props = defineProps(['vehicles', 'filters', 'brands', 'models', 'years', 'sort'])
+const props = defineProps(['vehicles', 'filters', 'brands', 'models', 'years', 'sort', 'breadcrumbs'])
 
 const processing = ref(false)
 const loading = ref(true)

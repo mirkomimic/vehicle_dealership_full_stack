@@ -39,12 +39,26 @@ class VehicleController extends Controller
       ->filter($filters)
       ->paginate(9);
 
+    $breadcrumbs = [
+      (object) [
+        'title' => 'Home',
+        'href' => 'home.index',
+        'disabled' => false
+      ],
+      (object) [
+        'title' => 'Search',
+        'href' => 'vehicles.search',
+        'disabled' => true
+      ]
+    ];
+
     return Inertia::render('Vehicles/Search', [
       'vehicles' => $vehicles,
       'filters' => $filters,
       'brands' => Brand::all(),
       'models' => Models::with('vehicles')->get(),
       'years' => range(1990, date('Y'), 1),
+      'breadcrumbs' => $breadcrumbs,
     ]);
   }
 
@@ -102,9 +116,28 @@ class VehicleController extends Controller
       ->orderBy('created_at', 'desc')
       ->get();
 
+    $breadcrumbs = [
+      (object) [
+        'title' => 'Home',
+        'href' => 'home.index',
+        'disabled' => false
+      ],
+      (object) [
+        'title' => 'Search',
+        'href' => 'vehicles.search',
+        'disabled' => false
+      ],
+      (object) [
+        'title' => $vehicle->brand->name,
+        'href' => 'vehicles.search',
+        'disabled' => true
+      ],
+    ];
+
     return Inertia::render('Vehicles/Show', [
       'vehicle' => $vehicle,
-      'comments' => $comments
+      'comments' => $comments,
+      'breadcrumbs' => $breadcrumbs,
     ]);
   }
 

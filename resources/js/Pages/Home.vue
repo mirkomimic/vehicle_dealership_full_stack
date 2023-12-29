@@ -2,10 +2,8 @@
 import SelectMinMaxYear from '@/Components/SelectOptions/SelectMinMaxYear.vue';
 import SelectOptionsVuetify from '@/Components/SelectOptions/SelectOptionsVuetify.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
-
 import { useTheme } from 'vuetify'
-
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { Head, useForm, usePage, Link } from '@inertiajs/vue3';
 import { ref, computed, onMounted, watch } from 'vue';
 import VueCarousel from '@/Components/Gallery/VueCarousel.vue';
 import BtnToggleVehicleType from '@/Components/BtnToggle/BtnToggleVehicleType.vue';
@@ -31,6 +29,9 @@ const props = defineProps({
   },
   vehiclesCount: {
     type: Object,
+  },
+  breadcrumbs: {
+    type: Array,
   }
 });
 
@@ -124,8 +125,22 @@ watch(form, () => {
 
   <MainLayout>
 
+    <v-container fluid class="pa-0 ma-0 ps-lg-10">
+      <v-breadcrumbs
+        :items="breadcrumbs"
+        divider="/"
+        icon="mdi-home"
+      >
+        <template v-slot:item="{item}">
+          <v-breadcrumbs-item :disabled="item.disabled">
+            <Link :href="route(item.href)">{{ item.title }}</Link>
+          </v-breadcrumbs-item>
+        </template>
+      </v-breadcrumbs>
+    </v-container>
+
     <!-- Main Page Filter -->
-    <div class="mt-16 mx-auto mm-border-green rounded-sm" style="width: 900px;">
+    <div class="mt-10 mx-auto mm-border-green rounded-sm" style="width: 900px;">
       <v-sheet class="pa-5" rounded>
         <div class="mb-4">
           <BtnToggleVehicleType v-model:type="form.type"/>

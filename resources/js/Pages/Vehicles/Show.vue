@@ -6,6 +6,20 @@
       <FullScreenVueCarouselGallery :vehicle="vehicle"/>
     </v-overlay>
 
+    <v-container fluid class="pa-0 ma-0 ps-lg-10">
+      <v-breadcrumbs
+        :items="breadcrumbs"
+        divider="/"
+        icon="mdi-home"
+      >
+        <template v-slot:item="{item}">
+          <v-breadcrumbs-item :disabled="item.disabled">
+            <Link :href="route(item.href)">{{ item.title }}</Link>
+          </v-breadcrumbs-item>
+        </template>
+      </v-breadcrumbs>
+    </v-container>
+
     <v-container>
       <v-row>
         <v-col
@@ -118,10 +132,10 @@ import Comments from '@/Components/Comments/Comments.vue';
 import FullScreenVueCarouselGallery from '@/Components/Gallery/FullScreenVueCarouselGallery.vue';
 import VueCarouselGallery from '@/Components/Gallery/VueCarouselGallery.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
-import { Head, router, useForm, usePage } from '@inertiajs/vue3';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { ref, computed } from 'vue';
 
-const props = defineProps(['vehicle', 'comments'])
+const props = defineProps(['vehicle', 'comments', 'breadcrumbs'])
 
 const cart = computed(() => usePage().props.cart)
 

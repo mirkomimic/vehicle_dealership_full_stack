@@ -25,14 +25,15 @@
           :value="index"
           :append-icon="item.icon"
         >
-          <v-list-item-title
-            @click="item.action"
-            class="font-weight-bold"
+          <Link :href="route(item.value)">
+            <v-list-item-title
+              class="font-weight-bold"
             >{{ item.title }}
-          </v-list-item-title>
-          <v-list-item-subtitle class="text-teal-lighten-3">
-            {{ item.subtitle }}
-          </v-list-item-subtitle>
+            </v-list-item-title>
+            <v-list-item-subtitle class="text-teal-lighten-3">
+              {{ item.subtitle }}
+            </v-list-item-subtitle>
+          </Link>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -40,7 +41,7 @@
 </template>
 
 <script setup>
-import { router, usePage } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 
 const user = usePage().props.auth.user
 
@@ -49,7 +50,8 @@ const items = [
     icon: 'mdi-account',
     title: user.name,
     subtitle: user.email,
-    action: () => router.get(route('profile.edit'))
+    // action: () => router.get(route('profile.edit'))
+    value: 'profile.edit'
   },
   // {
   //   icon: 'mdi-account',
@@ -59,12 +61,14 @@ const items = [
   {
     icon: 'mdi-car-back',
     title: 'My Vehicles',
-    action: () => router.get(route('vehicles.index'))
+    // action: () => router.get(route('vehicles.index'))
+    value: 'vehicles.index'
   },
   {
     icon: 'mdi-logout',
     title: 'Logout',
-    action: () => router.post(route('logout'))
+    // action: () => router.post(route('logout'))
+    value: 'logout'
   },
 ]
 </script>

@@ -13,51 +13,60 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function edit(Request $request): Response
-    {
-        return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
-        ]);
+  /**
+   * Display the user's profile form.
+   */
+  public function edit(Request $request): Response
+  {
+    $breadcrumbs = [
+      (object) [
+        'title' => 'Profile',
+        'href' => 'profile.edit',
+        'disabled' => true
+      ]
+    ];
+
+    return Inertia::render('Profile/Edit', [
+      'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+      'status' => session('status'),
+      'breadcrumbs' => $breadcrumbs,
+    ]);
+  }
+
+  /**
+   * Update the user's profile information.
+   */
+  public function update(ProfileUpdateRequest $request): RedirectResponse
+  {
+    $request->user()->fill($request->validated());
+
+    if ($request->user()->isDirty('email')) {
+      $request->user()->email_verified_at = null;
     }
 
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+    $request->user()->save();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
-        }
+    return Redirect::route('profile.edit');
+  }
 
-        $request->user()->save();
+  /**
+   * Delete the user's account.
+   */
+  public function destroy(Request $request): RedirectResponse
+  {
+    $request->validate([
+      'password' => ['required', 'current_password'],
+    ]);
 
-        return Redirect::route('profile.edit');
-    }
+    $user = $request->user();
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
+    Auth::logout();
 
-        $user = $request->user();
+    $user->delete();
 
-        Auth::logout();
+    $request->session()->invalidate();
+    $request->session()->regenerateToken();
 
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
-    }
+    return Redirect::to('/');
+  }
 }

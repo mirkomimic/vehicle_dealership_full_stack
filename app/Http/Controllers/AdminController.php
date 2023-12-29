@@ -18,13 +18,37 @@ class AdminController extends Controller
    */
   public function index()
   {
-    return Inertia::render('Dashboard/Index');
+    $breadcrumbs = [
+      (object) [
+        'title' => 'Dashboard',
+        'href' => 'dashboard.index',
+        'disabled' => true
+      ]
+    ];
+
+    return Inertia::render('Dashboard/Index', [
+      'breadcrumbs' => $breadcrumbs,
+    ]);
   }
 
   public function brands()
   {
+    $breadcrumbs = [
+      (object) [
+        'title' => 'Dashboard',
+        'href' => 'dashboard.index',
+        'disabled' => false
+      ],
+      (object) [
+        'title' => 'Brands',
+        'href' => 'dashboard.brands',
+        'disabled' => true
+      ],
+    ];
+
     return Inertia::render('Dashboard/Brands', [
-      'brands' => Brand::all()
+      'brands' => Brand::all(),
+      'breadcrumbs' => $breadcrumbs
     ]);
   }
 

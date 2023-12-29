@@ -1,10 +1,10 @@
 <script setup>
 import DashboardLayout from '@/Layouts/DashboardLayout.vue';
-import { Head, router, useForm, usePage } from '@inertiajs/vue3';
+import { Head, Link, router, useForm, usePage } from '@inertiajs/vue3';
 import { watch, computed, toRefs, ref, nextTick } from 'vue';
 // import { VDataTable } from 'vuetify/labs/VDataTable'
 
-const props = defineProps(['brands'])
+const props = defineProps(['brands', 'breadcrumbs'])
 const { brands } = toRefs(props)
 
 const rules = {
@@ -193,6 +193,20 @@ const setImg = (e) => {
       </v-snackbar>
 
     </div>
+
+    <v-container fluid class="pa-0 ma-0 ps-lg-10">
+      <v-breadcrumbs
+        :items="breadcrumbs"
+        divider="/"
+        icon="mdi-shield-account"
+      >
+        <template v-slot:item="{item}">
+          <v-breadcrumbs-item :disabled="item.disabled">
+            <Link :href="route(item.href)">{{ item.title }}</Link>
+          </v-breadcrumbs-item>
+        </template>
+      </v-breadcrumbs>
+    </v-container>
 
 
     <div class="text-h4 text-teal-darken-1 text-uppercase text-center mt-5">Brands</div>
