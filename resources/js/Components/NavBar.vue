@@ -10,7 +10,15 @@
             <img width="70" class="" src="/icons/blue-car-logo.png" alt="">
           </Link>
         </div>
+
         <v-spacer></v-spacer>
+
+        <div style="width: 400px;">
+          <NavbarKeywordSearch/>
+        </div>
+
+        <v-spacer></v-spacer>
+
         <div class="d-flex align-center" style="gap: 10px;">
           <Link v-if="$page.props.auth.user?.is_admin" href="/dashboard">
             <v-btn variant="tonal" color="grey-lighten-1">Dashboard</v-btn>
@@ -47,6 +55,7 @@ import { Link } from '@inertiajs/vue3';
 import { useTheme } from 'vuetify'
 import NavBarUserDropdown from './Dropdowns/NavBarUserDropdown.vue';
 import CartDialog from './Dialogs/CartDialog.vue';
+import NavbarKeywordSearch from './Dialogs/NavbarKeywordSearch.vue';
 
 const theme = useTheme()
 

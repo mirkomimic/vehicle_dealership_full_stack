@@ -119,17 +119,19 @@ class VehicleController extends Controller
     $breadcrumbs = [
       (object) [
         'title' => 'Home',
-        'href' => 'home.index',
-        'disabled' => false
-      ],
-      (object) [
-        'title' => 'Search',
-        'href' => 'vehicles.search',
+        'href' => '/',
         'disabled' => false
       ],
       (object) [
         'title' => $vehicle->brand->name,
-        'href' => 'vehicles.search',
+        'href' => '/vehicles_search?brand=' . $vehicle->brand->id,
+        // 'href' => 'vehicles.search, {brand: ' . $vehicle->brand->id . '}',
+        'disabled' => false
+      ],
+      (object) [
+        'title' => $vehicle->model->name,
+        'href' => '/vehicles_search?model=' . $vehicle->model->id,
+        // 'href' => '/search',
         'disabled' => true
       ],
     ];

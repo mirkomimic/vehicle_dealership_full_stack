@@ -88,7 +88,7 @@
 
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { Head, useForm, Link } from '@inertiajs/vue3';
+import { Head, useForm, Link, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 defineProps({

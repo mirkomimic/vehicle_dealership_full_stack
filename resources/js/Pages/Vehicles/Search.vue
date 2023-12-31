@@ -5,6 +5,8 @@
 
     <template v-slot:main>
 
+      <!-- <KeywordSearchDialog/> -->
+
       <v-container fluid class="pa-0 ma-0 ps-lg-10">
         <v-breadcrumbs
           :items="breadcrumbs"
@@ -20,7 +22,7 @@
       </v-container>
 
       <v-container>
-        <div class="vuetifySelect mx-auto d-flex flex-column align-center flex-sm-row justify-sm-space-around ">
+        <div class="vuetifySelect mx-auto d-flex flex-column align-center flex-sm-row justify-sm-space-between ">
 
           <div>
             <v-btn
@@ -29,21 +31,6 @@
               class="mb-3 mb-sm-0 d-lg-none"
               >Filters
             </v-btn>
-          </div>
-
-          <div style="width: 300px;">
-            <v-text-field
-              v-model="form.search"
-              @keyup.enter="submit"
-              clearable
-              rounded="md"
-              append-inner-icon="mdi-magnify"
-              label="Search"
-              density="compact"
-              variant="outlined"
-              color="teal-lighten-3"
-              hide-details
-            ></v-text-field>
           </div>
 
           <div style="min-width: 200px;">
@@ -193,7 +180,7 @@ const form = useForm({
   minYear: (props.filters.minYear) || null,
   maxYear: props.filters.maxYear || null,
   mileageRange: props.filters.mileageRange || [0, 500000],
-  search: props.filters.search || null,
+  // search: props.filters.search || null,
   sort: props.filters.sort || null,
   type: Number(props.filters.type) || null,
   page: props.vehicles.current_page,
@@ -222,6 +209,12 @@ const submit = () => {
     loading.value = true
   }, 1500);
 }
+
+onMounted(() => {
+  if (display.value.mdAndDown) {
+    usePage().props.leftDrawer = false
+  }
+})
 
 const reset = () => {
   form.reset();

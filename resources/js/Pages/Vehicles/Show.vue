@@ -14,7 +14,7 @@
       >
         <template v-slot:item="{item}">
           <v-breadcrumbs-item :disabled="item.disabled">
-            <Link :href="route(item.href)">{{ item.title }}</Link>
+            <Link :href="item.href">{{ item.title }}</Link>
           </v-breadcrumbs-item>
         </template>
       </v-breadcrumbs>

@@ -3,8 +3,8 @@ import SelectMinMaxYear from '@/Components/SelectOptions/SelectMinMaxYear.vue';
 import SelectOptionsVuetify from '@/Components/SelectOptions/SelectOptionsVuetify.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import { useTheme } from 'vuetify'
-import { Head, useForm, usePage, Link } from '@inertiajs/vue3';
-import { ref, computed, onMounted, watch } from 'vue';
+import { Head, useForm, Link } from '@inertiajs/vue3';
+import { ref, computed, watch } from 'vue';
 import VueCarousel from '@/Components/Gallery/VueCarousel.vue';
 import BtnToggleVehicleType from '@/Components/BtnToggle/BtnToggleVehicleType.vue';
 
@@ -38,7 +38,6 @@ const props = defineProps({
 const processing = ref(false)
 const moreOptions = ref(false)
 const numOfVehicles = ref(null)
-const token = ref(null)
 
 const form = useForm({
   brand: null,
@@ -57,7 +56,7 @@ const submit = () => {
   }, 2000)
 }
 
-const resetFilter = () => {
+const reset = () => {
   form.reset()
 }
 
@@ -67,24 +66,27 @@ const switchColor = computed(() => {
   return theme.global.current.value.dark  ? 'teal-lighten-3' : 'teal-darken-3';
 })
 
-const getToken = () => {
-  fetch('/api/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({id: usePage().props.auth.user.id})
-  }).then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json()
-  }).then(data => {
-    token.value = data.token
-  }).catch(error => {
-    console.log(error);
-  })
-}
+// const getToken = () => {
+//   fetch('/api/token', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//     },
+//     body: JSON.stringify({
+//       id: form.email,
+//       password: form.password
+//     })
+//   }).then(response => {
+//     if (!response.ok) {
+//       throw new Error('Network response was not ok');
+//     }
+//     return response.json()
+//   }).then(data => {
+//     usePage().props.token = data.token
+//   }).catch(error => {
+//     console.log(error);
+//   })
+// }
 
 const numOfVehiclesApi = () => {
   processing.value = true
@@ -108,11 +110,6 @@ const numOfVehiclesApi = () => {
     console.log(error);
   })
 }
-
-onMounted(() => {
-  getToken()
-})
-
 
 watch(form, () => {
   numOfVehiclesApi()
@@ -140,7 +137,7 @@ watch(form, () => {
     </v-container>
 
     <!-- Main Page Filter -->
-    <div class="mt-10 mx-auto mm-border-green rounded-sm" style="width: 900px;">
+    <div class="mt-10 mx-auto mm-border-green rounded-sm" style="max-width: 900px;">
       <v-sheet class="pa-5" rounded>
         <div class="mb-4">
           <BtnToggleVehicleType v-model:type="form.type"/>
@@ -201,7 +198,7 @@ watch(form, () => {
               ({{ numOfVehicles }})
             </template>
           </v-btn>
-          <v-btn @click="resetFilter" variant="plain" class="px-0">
+          <v-btn @click="reset" variant="plain" class="px-0">
             <span class="text-decoration-underline">Clear search</span>
           </v-btn>
         </div>      
