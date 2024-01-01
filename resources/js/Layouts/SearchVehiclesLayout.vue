@@ -26,13 +26,18 @@
       <slot name="nav-drawer"/>
     </v-navigation-drawer>
 
-    <v-footer style="z-index: 1007;">
+    <v-bottom-navigation :elevation="0" v-if="display.smAndDown">
+      <BottomNav/>
+    </v-bottom-navigation>
+
+    <v-footer style="z-index: 1007;" v-if="display.mdAndUp">
       <MainFooter/>
     </v-footer>
   </v-app>
 </template>
 
 <script setup>
+import BottomNav from '@/Components/BottomNav.vue';
 import MainFooter from '@/Components/MainFooter.vue';
 import NavBar from '@/Components/NavBar.vue';
 import { computed, ref } from 'vue';

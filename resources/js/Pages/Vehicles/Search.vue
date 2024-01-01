@@ -84,7 +84,7 @@
 
     <template v-slot:nav-drawer>
 
-      <div class="px-3" style="height: 1500px;">
+      <div class="px-3">
 
         <div class="d-flex mt-2 mb-10">
           <v-btn

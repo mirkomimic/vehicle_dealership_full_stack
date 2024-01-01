@@ -17,7 +17,11 @@
       </Transition>
     </v-main>
 
-    <v-footer style="z-index: 20;">
+    <v-bottom-navigation :elevation="0" v-if="display.smAndDown">
+      <BottomNav/>
+    </v-bottom-navigation>
+
+    <v-footer style="z-index: 20;" v-if="display.mdAndUp">
       <MainFooter/>
     </v-footer>
 
@@ -25,8 +29,14 @@
 </template>
 
 <script setup>
+import BottomNav from '@/Components/BottomNav.vue';
 import MainFooter from '@/Components/MainFooter.vue';
 import NavBar from '@/Components/NavBar.vue';
+import { ref } from 'vue';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
+
+const display = ref(useDisplay()) 
+
 
 </script>
 

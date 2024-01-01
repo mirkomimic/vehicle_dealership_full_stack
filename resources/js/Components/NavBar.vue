@@ -4,23 +4,23 @@
     density="compact"
   >
     <v-container>
-      <div class="d-flex align-center">
-        <div>
+      <div class="d-flex align-center justify-space-between">
+        <div class="d-none d-md-block">
           <Link href="/">
-            <img width="70" class="" src="/icons/blue-car-logo.png" alt="">
+            <img width="70" src="/icons/blue-car-logo.png">
           </Link>
         </div>
 
         <v-spacer></v-spacer>
 
-        <div style="width: 400px;">
+        <div class="d-flex justify-center px-2" style="width: 400px;">
           <NavbarKeywordSearch/>
         </div>
 
         <v-spacer></v-spacer>
 
-        <div class="d-flex align-center" style="gap: 10px;">
-          <Link v-if="$page.props.auth.user?.is_admin" href="/dashboard">
+        <div class="d-flex align-center flex-shrink-0" style="gap: 10px;">
+          <Link class="d-none d-md-block" v-if="$page.props.auth.user?.is_admin" href="/dashboard">
             <v-btn variant="tonal" color="grey-lighten-1">Dashboard</v-btn>
           </Link>
 

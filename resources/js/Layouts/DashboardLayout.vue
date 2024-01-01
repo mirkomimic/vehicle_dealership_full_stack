@@ -9,9 +9,9 @@
     </v-app-bar>
 
     <v-navigation-drawer
-      class="d-none d-md-block"
-      disable-resize-watcher
+      :disable-resize-watcher="true"
       expand-on-hover
+      permanent
       rail
     >
       <v-list>
@@ -51,15 +51,22 @@
           </div>
         </v-fade-transition>
       </v-main>
+
+      <v-bottom-navigation :elevation="0" v-if="display.smAndDown">
+        <BottomNav/>
+      </v-bottom-navigation>
+
   </v-layout>
 </template>
 
 <script setup>
+import BottomNav from '@/Components/BottomNav.vue';
 import NavBar from '@/Components/NavBar.vue';
 import { Link } from '@inertiajs/vue3';
-import { onMounted } from 'vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import { useDisplay } from 'vuetify/lib/framework.mjs';
 
+const display = ref(useDisplay()) 
 let animatePage = ref(false)
 
 onMounted(() => {

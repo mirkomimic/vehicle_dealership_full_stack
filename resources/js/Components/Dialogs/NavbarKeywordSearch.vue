@@ -12,7 +12,8 @@
         prepend-icon="mdi-magnify"
         rounded
         bg-color="grey-darken-3"
-        width="400"
+        class="w-100"
+        max-width="400"
         >Search
       </v-btn>
     </template>
@@ -46,11 +47,9 @@
                     v-for="(brand, index) in brands" :key="index"
                     :value="index"
                   >
-                    <Link :href="'/vehicles_search?brand=' + brand.id">
-                      <v-list-item-title>
-                        {{ brand.name }}
-                      </v-list-item-title>
-                    </Link>
+                    <v-list-item-title @click="search(`/vehicles_search?brand=${brand.id}`)">
+                      {{ brand.name }}
+                    </v-list-item-title>
                   </v-list-item>
               </v-list>
             </v-col>
@@ -62,11 +61,9 @@
                   v-for="(model, index) in models" :key="index"
                   :value="index"
                 >
-                  <Link :href="'/vehicles_search?model=' + model.id">
-                    <v-list-item-title>
-                      {{ model.name }}
-                    </v-list-item-title>
-                  </Link>
+                  <v-list-item-title @click="search(`/vehicles_search?brand=${model.brand.id}&model=${model.id}`)">
+                    {{ model.name }}
+                  </v-list-item-title>
                 </v-list-item>
               </v-list>
             </v-col>
@@ -80,7 +77,7 @@
 </template>
 
 <script setup>
-import { Link } from '@inertiajs/vue3';
+import { router } from '@inertiajs/vue3';
 import { ref } from 'vue';
 
 const keyword = ref(null);
@@ -100,16 +97,18 @@ const keywordSearch = () => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Accept': 'application/json',
     },
     body: JSON.stringify({keyword: keyword.value})
   }).then(response => {
     if (!response.ok) {
+      brands.value = []
+      models.value = []
       throw new Error('Network response was not ok');
     }
-
     return response.json();
   }).then(data => {
-    if (data.result == 'No Results') {
+    if (data.message === 'The keyword field is required.') {
       brands.value = []
       models.value = []
     }
@@ -118,6 +117,10 @@ const keywordSearch = () => {
   }).catch(error => {
     console.log(error);
   })
+}
+
+const search = (url) => {
+  router.get(url);
 }
 
 
