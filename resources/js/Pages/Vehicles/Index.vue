@@ -4,7 +4,7 @@
   <MainLayout>
       <div class="text-center">
         <v-snackbar
-          v-model="$page.props.flash.success"
+          v-model="snackbar"
           location="top right"
           position="fixed"
           timeout="5000"
@@ -108,11 +108,12 @@
                     cols="12"
                   >
                     <v-text-field
-                      type="number"
+                      type="text"
                       label="Price"
                       v-model="addVehicleForm.price"
                       :rules="[rules.required]"
                       :error-messages="addVehicleForm.errors.price"
+                      @blur="formatPrice"
                       variant="outlined"
                       density="comfortable"
                     ></v-text-field>
@@ -177,7 +178,6 @@
 </template>
 
 <script setup>
-import MainFooter from '@/Components/MainFooter.vue';
 import SelectOptionsVuetifyForAddVehicleForm from '@/Components/SelectOptions/SelectOptionsVuetifyForAddVehicleForm.vue';
 import MainLayout from '@/Layouts/MainLayout.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
@@ -188,6 +188,13 @@ const props = defineProps(['brands', 'models', 'years']);
 
 const dialog = ref(false)
 const addVehicleProgress = ref(false)
+const snackbar = ref(false)
+
+watch(computed(() => usePage().props.flash.success ), () => {
+  if (usePage().props.flash.success) {
+    snackbar.value = true
+  }
+})
 
 const selectedBrand = ref(null);
 
@@ -216,6 +223,10 @@ const rules = {
 
     return (isNumber && isValidLength) || 'Field must be less than 6 characters';
   },
+}
+
+const formatPrice = () => {
+  addVehicleForm.price = parseFloat(addVehicleForm.price).toFixed(2);
 }
 
 const setImgs = (e) => {

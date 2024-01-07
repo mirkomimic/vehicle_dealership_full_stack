@@ -59,6 +59,6 @@ class DatabaseSeeder extends Seeder
     );
 
     Models::factory(20)->create();
-    Vehicle::factory(20)->create();
+    // Vehicle::factory(20)->create();
   }
 }

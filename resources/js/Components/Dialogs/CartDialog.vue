@@ -57,16 +57,16 @@
               </td>
               <td>{{ item.vehicle.year }}</td>
               <td>{{ item.vehicle.mileage }}</td>
-              <td>{{ item.vehicle.price }}</td>
+              <td>{{ formatPrice(item.vehicle.price) }}</td>
               <td>{{ item.quantity }}</td>
-              <td>{{ item.total }}</td>
+              <td>{{ formatPrice(item.total) }}</td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
               <td colspan="7"></td>
               <td class="font-weight-bold">Grand Total</td>
-              <td class="font-weight-bold">{{ grandTotal }}</td>
+              <td class="font-weight-bold">{{ formatPrice(grandTotal) }}</td>
             </tr>
           </tfoot>
         </v-table>
@@ -82,7 +82,7 @@
             >Clear cart
           </v-btn>
 
-          <Link :href="route('orders.create')" class="mx-2">
+          <Link :href="route('checkout.index')" class="mx-2">
             <v-btn
               text="Checkout"
               variant="tonal"
@@ -121,6 +121,10 @@ const grandTotal = computed(() => {
 
 const clearCart = () => {
   router.post(route('cart.clear'))
+}
+
+const formatPrice = (price) => {
+  return price.toLocaleString("de-DE", { maximumFractionDigits: 2, minimumFractionDigits: 2 })
 }
 
 </script>

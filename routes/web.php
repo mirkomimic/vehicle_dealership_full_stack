@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -58,7 +59,11 @@ Route::middleware('auth')->group(function () {
   Route::post('/cart_remove', [CartController::class, 'remove'])->name('cart.remove');
   Route::post('/cart_clear', [CartController::class, 'clear'])->name('cart.clear');
 
-  Route::resource('orders', OrderController::class);
+  Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+  Route::get('/checkout_cancel', [CheckoutController::class, 'destroy'])->name('checkout.destroy');
+
+  Route::resource('orders', OrderController::class)->only(['index', 'create', 'store', 'update']);
+  Route::get('/order_complete', [OrderController::class, 'complete'])->name('orders.success');
 
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -41,7 +41,7 @@ const sort = [
     value: 'priceDesc',
   },
   {
-    title: 'Newest',
+    title: 'Latest',
     value: 'createdDesc',
   },
   {

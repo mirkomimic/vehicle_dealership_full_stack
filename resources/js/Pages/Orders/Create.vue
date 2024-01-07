@@ -1,167 +1,182 @@
 <template>
   <Head title="Create Order"></Head>
 
-  <div>
-    <v-container>
-      <div class="text-h4 text-uppercase text-amber-darken-1">Order</div>
-      <v-stepper v-model="step" class="mt-5">
-        <v-stepper-header>
-          <v-stepper-item
-            :value="1"
-            :complete="step > 1"
-            color="teal-darken-3"
-            class="text-amber-darken-1"
-            >Order details
-          </v-stepper-item>
-          
-          <v-divider></v-divider>
+  <div class="pa-5">
+    <div>
+      <div class="d-flex justify-space-between mb-5">
+        <div class="text-h4 text-uppercase text-amber-darken-1">
+          Order #{{ order.id }}
+        </div>
+        <div>
+          <v-btn
+            @click="router.get(route('checkout.destroy'))"
+            variant="outlined"
+            color="red-lighten-3"
+            >Cancel Order
+          </v-btn>
+        </div>
+      </div>
 
-          <v-stepper-item
-            :value="2"
-            :complete="step > 2"
-            color="teal-darken-3"
-            class="text-amber-darken-1"
-            >Payment & Shipping
-          </v-stepper-item>
-
-          <v-divider></v-divider>
-
-          <v-stepper-item
-            :value="3"
-            :complete="step > 3"
-            color="teal-darken-3"
-            class="text-amber-darken-1"
-            >Confirm order
-          </v-stepper-item>
-        </v-stepper-header>
-
-        <v-stepper-window>
-          <v-stepper-window-item :value="1">
-            <div style="height: 500px;">
-              <v-row>
-                <v-col
-                  cols="6"
-                  style="height: 500px; overflow-y: scroll;"
-                >
-                  <h6 class="text-h6 text-amber-darken-1 mb-3">Products</h6>
-                  <v-card
-                    v-for="(item, index) in cart" :key="index"
-                    class="d-flex mb-3 pa-3"
-                    :class="index % 2 ? 'flex-row-reverse' : ''"
-                    color="grey-darken-3"
-                  >
-                    <div>
-                      <v-img
-                        :width="200"
-                        :height="200"
-                        cover
-                        :src="`../storage/images/vehicles/${item.vehicle.id}/${item.vehicle.images[0].img}`"
-                        class="rounded-lg me-auto"
-                      />
-                    </div>
-                    <div class="text-h6 d-flex flex-column" :class="index % 2 ? 'me-auto text-left' : 'ms-auto text-right'">
-                      <div>
-                        ID: {{ item.vehicle.id }}
-                      </div>
-                      <div class="d-flex ga-3 ">
-                        <div>{{ item.vehicle.brand.name }}</div>
-                        <div>{{ item.vehicle.model.name }}</div>
-                      </div>
-                      <v-divider></v-divider>
-                      <div>Price: {{ item.vehicle.price }}</div>
-                      <div>Quantity: {{ item.quantity }}</div>
-                      <v-divider></v-divider>
-                      <div class="font-weight-bold mt-auto">Total: {{ item.total }}</div>
-                    </div>
-                  </v-card>
-                </v-col>
-                <v-divider vertical></v-divider>
-                <v-col
-                  cols="6"
-                >
-                  <div class="text-h5 mt-3 text-center">Grand Total: {{ grandTotal }}</div>
-                </v-col>
-              </v-row>
-            </div>
-          </v-stepper-window-item>
-
-          <v-stepper-window-item :value="2">
-            <div style="height: 500px;">
-              Payment
-            </div>
-          </v-stepper-window-item>
-          <v-stepper-window-item :value="3">
-            <div style="height: 500px;">
-              <div class="text-h5 text-center">Grand Total: {{ grandTotal }}</div>
-              <div class="d-flex">
-                <v-btn
-                  @click="order"
-                  variant="tonal"
-                  color="teal-lighten-3"
-                  class="mt-2 mx-auto"
-                  >Order
-                </v-btn>
-              </div>
-            </div>
-          </v-stepper-window-item>
-        </v-stepper-window>
-
-        <v-stepper-actions>
-          <template v-slot:next>
+      <v-card
+        class="pa-3 w-50 mx-auto"
+      >
+        <form id="payment-form">
+          <div id="card-element"></div>
+          <button id="submit" class="mt-3">
+            <!-- <div v-if="isProcessing" id="button-text">Processing...</div> -->
             <v-btn
-              color="teal-lighten-3"
+              id="button-text"
               variant="tonal"
-              @click="step++"
-              append-icon="mdi-arrow-right"
-              >Next
-            </v-btn>
-          </template>
-          <template v-slot:prev>
-            <v-btn
               color="teal-lighten-3"
-              variant="tonal"
-              @click="step--"
-              prepend-icon="mdi-arrow-left"
-              >Back
+              :loading="isProcessing"
+              :disabled="isProcessing"
+              >Place your order in USD
             </v-btn>
-          </template>
-        </v-stepper-actions>
-      </v-stepper>
-    </v-container>
+          </button>
+          <p id="card-error"></p>
+        </form>
+      </v-card>
+
+    </div>
   </div>
 
-  <v-overlay v-model="progress" class="d-flex justify-center align-center mm-blur" scrim="transparent">
-    <v-progress-circular indeterminate class="ms-auto" :size="204" :width="10" color="teal-darken-3" bg-color="amber-darken-1"></v-progress-circular>
-  </v-overlay>
 </template>
 
 <script setup>
-import MainLayout from '@/Layouts/MainLayout.vue';
-import { Head, useForm, usePage } from '@inertiajs/vue3';
-import { ref, computed } from 'vue';
+import { Head, router, useForm, usePage} from '@inertiajs/vue3';
+import { ref, onMounted } from 'vue';
 
-const step = ref(1)
-const progress = ref(false)
+const props = defineProps(['order', 'intent']);
 
-const cart = computed(() => usePage().props.cart)
+// let stripe = null;
+// const stripe = Stripe("pk_test_51NRtV0KnRuwVl5IvfPH8T24zLnFKxdiLuZwgmFAQjaeWBgmbHyaErJjJibeaKCLvqgaa9JI0nQu4Am4iT0PiRidc00MWk8xoZz");
 
-const grandTotal = computed(() => {
-  return cart.value.reduce((accumulator, item) => {
-    return accumulator + item.total
-  }, 0);
-})
-
+let stripe = null;
+let elements = null;
+let card = null;
+let isProcessing = ref(false);
 const form = useForm({
-  grandTotal: grandTotal.value
+  payment_intent: null,
 })
 
-const order = () => {
-  progress.value = true
-  setTimeout(() => {
-    progress.value = false
-    form.post(route('orders.store'));
-  }, 2000);
+
+onMounted(() => {
+  stripe = Stripe(usePage().props.stripe_key);
+  
+  elements = stripe.elements();
+  // const paymentElement = elements.create('payment', options);
+  // paymentElement.mount('#payment-element');
+
+  let style = {
+    base: {
+      color: "#32325d",
+      fontFamily: 'Arial, sans-serif',
+      fontSmoothing: "antialiased",
+      fontSize: "16px",
+      "::placeholder": {
+        color: "#32325d"
+      }
+    },
+    invalid: {
+      fontFamily: 'Arial, sans-serif',
+      color: "#fa755a",
+      iconColor: "#fa755a"
+    }
+  };
+
+  card = elements.create("card", { style: style });
+  card.mount("#card-element");
+
+  card.on("change", function (event) {
+    // Disable the Pay button if there are no card details in the Element
+    document.querySelector("button").disabled = event.empty;
+    document.querySelector("#card-error").textContent = event.error ? event.error.message : "";
+  });
+
+  var form = document.getElementById("payment-form");
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    // Complete payment when the submit button is clicked
+    payWithCard(stripe, card, props.intent.client_secret);
+  });
+
+  // setTimeout(() => {
+  //   router.post(route('orders.index'), {
+  //     total: totalWithoutDot(),
+  //     total_decimal: total,
+  //     items: cart.value,
+  //   })
+  // }, 10)
+
+})
+
+const payWithCard = (stripe, card, clientSecret) => {
+  loading(true);
+  stripe
+    .confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: card
+      }
+    })
+    .then(function (result) {
+      if (result.error) {
+        // Show error to your customer
+        showError(result.error.message);
+      } else {
+        // The payment succeeded!
+        orderComplete(result.paymentIntent.id);
+      }
+    });
 }
+
+// Shows a success message when the payment is complete
+const orderComplete = (paymentIntentId) => {
+  form.payment_intent = paymentIntentId
+  form.put(route('orders.update', props.order.id))
+};
+
+// Show the customer the error from Stripe if their card fails to charge
+let showError = (errorMsgText) => {
+  loading(false);
+  var errorMsg = document.querySelector("#card-error");
+  errorMsg.textContent = errorMsgText;
+  setTimeout(function() {
+    errorMsg.textContent = "";
+  }, 4000);
+};
+
+// Show a spinner on payment submission
+let loading = (isLoading) => {
+  if (isLoading) {
+    // Disable the button and show a spinner
+    document.querySelector("button").disabled = true;
+    isProcessing.value = true;
+  } else {
+    document.querySelector("button").disabled = false;
+    isProcessing.value = false;
+  }
+};
+
 
 
 </script>
+
+<style scoped>
+#card-element {
+  border-radius: 4px 4px 0 0 ;
+  padding: 12px;
+  border: 1px solid rgba(50, 50, 93, 0.1);
+  height: 44px;
+  width: 100%;
+  background: white;
+}
+
+#payment-request-button {
+  margin-bottom: 32px;
+}
+
+.submit-btn {
+  border: 1px solid white;
+}
+
+</style>

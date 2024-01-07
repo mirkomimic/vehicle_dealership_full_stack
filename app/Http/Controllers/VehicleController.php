@@ -9,6 +9,8 @@ use App\Models\Vehicle;
 use App\Models\VehicleImg;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class VehicleController extends Controller
@@ -125,13 +127,11 @@ class VehicleController extends Controller
       (object) [
         'title' => $vehicle->brand->name,
         'href' => '/vehicles_search?brand=' . $vehicle->brand->id,
-        // 'href' => 'vehicles.search, {brand: ' . $vehicle->brand->id . '}',
         'disabled' => false
       ],
       (object) [
         'title' => $vehicle->model->name,
         'href' => '/vehicles_search?model=' . $vehicle->model->id,
-        // 'href' => '/search',
         'disabled' => true
       ],
     ];
@@ -156,6 +156,14 @@ class VehicleController extends Controller
    */
   public function destroy(string $id)
   {
-    //
+    $vehicle = Vehicle::find($id);
+
+    if (Storage::disk('public')->exists('images/vehicles/' . $vehicle->id . '/')) {
+      Storage::disk('public')->deleteDirectory('images/vehicles/' . $vehicle->id . '/');
+    }
+
+    $vehicle->delete();
+
+    return redirect('/');
   }
 }

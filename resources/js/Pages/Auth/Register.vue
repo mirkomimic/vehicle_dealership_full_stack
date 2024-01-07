@@ -1,7 +1,7 @@
 <template>
   <GuestLayout>
 
-    <Head title="Log in" />
+    <Head title="Register" />
 
     <div class="h-screen d-flex justify-center ">
       <v-sheet class="d-flex flex-column justify-center my-auto pa-5" height="500" width="700" rounded>
@@ -54,7 +54,7 @@
                 <div class="mx-auto">
                   <v-text-field
                     v-model="form.password_confirmation"
-                    :rules="[passwordRules, passwordConfirationRule]"
+                    :rules="[passwordConfirationRule]"
                     :error-messages="form.errors.password_confirmation"
                     label="Password confirmation"
                     variant="underlined"

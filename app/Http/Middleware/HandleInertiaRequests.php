@@ -37,6 +37,7 @@ class HandleInertiaRequests extends Middleware
       ],
       'cart' => session('cart', []),
       'leftDrawer' => true,
+      'stripe_key' => env('STRIPE_KEY'),
       'flash' => [
         'success' => fn () => $request->session()->get('success')
       ],

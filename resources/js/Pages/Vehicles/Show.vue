@@ -35,6 +35,16 @@
           md="6"
           class="mt-md-15"
         >
+          <v-btn
+            v-if="vehicle.user_id == user?.id || user?.is_admin"
+            @click="router.delete(route('vehicles.destroy', vehicle.id))"
+            color="red-lighten-3"
+            variant="outlined"
+            density="compact"
+            class="mb-3"
+            >Delete Vehicle
+          </v-btn>
+
           <v-table density="comfortable">
             <tbody>
               <tr>
@@ -59,7 +69,7 @@
               </tr>
               <tr>
                 <td>Price</td>
-                <td>{{ vehicle.price }}</td>
+                <td>{{ formatPrice(vehicle.price) }}</td>
               </tr>
               <tr>
                 <td>Created</td>
@@ -138,6 +148,7 @@ import { ref, computed } from 'vue';
 const props = defineProps(['vehicle', 'comments', 'breadcrumbs'])
 
 const cart = computed(() => usePage().props.cart)
+const user = usePage().props.auth.user
 
 const galleryOverlay = ref(false)
 
@@ -163,6 +174,11 @@ const addToCart = (vehicle) => {
 const removeFromCart = (vehicle) => {
   router.post(route('cart.remove'), {vehicle: vehicle})
 }
+
+const formatPrice = (price) => {
+  return price.toLocaleString("de-DE", { maximumFractionDigits: 2, minimumFractionDigits: 2 })
+}
+
 
 const qtyOfVehicleInCart = computed(() => {
   let item = cart.value.find((item) => {

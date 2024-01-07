@@ -44,7 +44,6 @@ class CartController extends Controller
         'total' => $request->vehicle['price']
       ];
     }
-
     session()->put('cart', $cart);
   }
 

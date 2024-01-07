@@ -23,10 +23,12 @@
         <v-divider class="mt-4 mx-3"/>
 
         <v-card-text>
-          <div>Mileage: {{ vehicle.mileage }}</div>
-          <div>Year: {{ vehicle.year }}</div>
-          <div>Price: {{ vehicle.price }}</div>
-          <div>Created: {{ new Date(vehicle.created_at).toLocaleDateString() }}</div>
+          <div>
+            <div>Mileage: {{ vehicle.mileage }}</div>
+            <div>Year: {{ vehicle.year }}</div>
+            <div>Price: {{ formatPrice(vehicle.price) }}</div>
+            <div>Created: {{ new Date(vehicle.created_at).toLocaleDateString() }}</div>
+          </div>
         </v-card-text>
       </v-card>
     </v-card>
@@ -41,6 +43,10 @@ const props = defineProps(['vehicle'])
 
 const show = (id) => {
   router.get(route('vehicles.show', id))
+}
+
+const formatPrice = (price) => {
+  return price.toLocaleString("de-DE", { maximumFractionDigits: 2, minimumFractionDigits: 2 })
 }
 
 

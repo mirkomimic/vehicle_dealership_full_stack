@@ -19,7 +19,7 @@
         <v-icon v-bind="props" icon="mdi-chevron-down"></v-icon>
       </template>
       <v-list density="compact" rounded="lg" class="mt-2">
-        <v-list-item
+        <!-- <v-list-item
           v-for="(item, index) in items"
           :key="index"
           :value="index"
@@ -34,7 +34,18 @@
               {{ item.subtitle }}
             </v-list-item-subtitle>
           </Link>
-        </v-list-item>
+        </v-list-item> -->
+
+        <Link :href="route('profile.edit')">
+          <v-list-item :title="user.name" :subtitle="user.email" append-icon="mdi-account" value="profile.edit"/>
+        </Link>
+        <Link :href="route('vehicles.index')">
+          <v-list-item title="My Vehicles" append-icon="mdi-car-back" value="vehicles.index"/>
+        </Link>
+        <div>
+          <v-list-item @click="router.post(route('logout'))" title="Logout" append-icon="mdi-logout" value="logout"/>
+        </div>
+
       </v-list>
     </v-menu>
   </div>
