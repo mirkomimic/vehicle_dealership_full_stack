@@ -121,7 +121,6 @@ watch(form, () => {
   <Head title="Welcome" />
 
   <MainLayout>
-
     <v-container fluid class="pa-0 ma-0 ps-lg-10">
       <v-breadcrumbs
         :items="breadcrumbs"

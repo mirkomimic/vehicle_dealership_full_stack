@@ -107,6 +107,8 @@
               <div class="d-flex">
                 <v-btn
                   @click="order"
+                  :loading="progress"
+                  :disabled="progress"
                   variant="tonal"
                   color="teal-lighten-3"
                   class="mt-2 mx-auto"

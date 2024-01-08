@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\OrderCreated;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 use Stripe\StripeClient;
 
@@ -18,6 +20,10 @@ class OrderController extends Controller
     $stripe = new StripeClient(env('STRIPE_SECRET'));
 
     $order = Order::query()->where('user_id', Auth::id())->where('payment_intent', null)->first();
+
+    // if (is_null($order)) {
+    //   return redirect()->route('home.index');
+    // }
 
     $intent = $stripe->paymentIntents->create([
       'amount' => (int) $order->total,
@@ -85,6 +91,8 @@ class OrderController extends Controller
 
     $order->payment_intent = $request->payment_intent;
     $order->save();
+
+    Mail::to('mirko@example.com')->send(new OrderCreated($order));
 
     // return Inertia::render('Orders/Complete');
     return redirect()->route('orders.success');
